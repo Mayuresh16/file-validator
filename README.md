@@ -55,7 +55,7 @@ file-validator/
 ├── configs/                      # Environment config (.env)
 ├── logs/                         # Application logs (core/, webserver/)
 ├── reports/                      # Generated reports + parquet cache (_cache/)
-├── scripts/                        # Start scripts and dev utilities
+├── scripts/                      # Start scripts and dev utilities
 └── pyproject.toml                # Workspace manifest
 ```
 
