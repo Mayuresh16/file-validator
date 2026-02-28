@@ -10,7 +10,7 @@ echo "Starting server in '$ENV' environment..."
 
 # Get the directory where this script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# Get the repository root (parent of tools directory)
+# Get the repository root (parent of scripts directory)
 REPO_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
 
 echo "Script directory: $SCRIPT_DIR"

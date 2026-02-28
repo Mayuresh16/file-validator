@@ -952,6 +952,5 @@ This project is licensed under the [MIT License](LICENSE).
 ## See Also
 
 - [File Validator WebServer](../file-validator-webserver/README.md) - Web UI
-- [Report Template Builder](../report-template-builder/templates/README.md) - Template structure
 - [Main README](../README.md) - Project overview
 

@@ -780,6 +780,5 @@ This project is licensed under the [MIT License](LICENSE).
 ## See Also
 
 - [File Validator Core](../file-validator-core/README.md) — Core library documentation
-- [Report Template Builder](../report-template-builder/templates/README.md) — Template structure
 - [Main README](../README.md) — Project overview
 - [DEVELOPMENT.md](../../DEVELOPMENT.md) — Development guide

@@ -52,7 +52,6 @@ file-validator/
 │       ├── fs_utils.py           # Async filesystem helpers
 │       ├── static/               # CSS, favicon
 │       └── templates/            # Jinja2 HTML templates
-├── report-template-builder/      # Modular HTML/CSS/JS template builder
 ├── configs/                      # Environment config (.env)
 ├── logs/                         # Application logs (core/, webserver/)
 ├── reports/                      # Generated reports + parquet cache (_cache/)
@@ -346,27 +345,15 @@ bash tools/start_server.sh dev
 # Start production server
 bash tools/start_server.sh prod
 
-# Build HTML template from modular sources
-cd report-template-builder/templates
-uv run python build_template.py
-
-# Lint
-uv run ruff check .
-uv run ruff format .
 ```
 
 ### Project Tools
 
 | Script                   | Purpose                                          |
 |--------------------------|--------------------------------------------------|
-| `tools/start_server.sh`  | Start web UI with smart sync (Bash)              |
-| `tools/start_server.ps1` | Start web UI with smart sync (PowerShell)        |
 | `tools/start_server.sh`  | Start server — `dev` or `prod` mode (Bash)       |
 | `tools/start_server.ps1` | Start server — `dev` or `prod` mode (PowerShell) |
 | `tools/start_server.bat` | Start server — `dev` or `prod` mode (CMD)        |
-| `tools/uv_sync_check.sh` | Check workspace sync status                      |
-| `tools/uv_sync_fix.sh`   | Fix workspace sync issues (Bash)                 |
-| `tools/uv_sync_fix.ps1`  | Fix workspace sync issues (PowerShell)           |
 
 ### Key Dependencies
 
@@ -391,7 +378,6 @@ See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development instructions.
 
 - [file-validator-core/README.md](file-validator-core/README.md) — Core library
 - [file-validator-webserver/README.md](file-validator-webserver/README.md) — Web UI
-- [report-template-builder/templates/README.md](report-template-builder/templates/README.md) — Template structure
 - [DEVELOPMENT.md](DEVELOPMENT.md) — Development guide
 
 ---
