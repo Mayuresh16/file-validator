@@ -207,8 +207,12 @@ marimo/_lsp/
 __marimo__/
 
 
-# Local files - ignore tepmorary files, test input and output files
+# Local files - ignore tepmorary files, test input and output files. from avoiding committing
+# to the repository. These files may contain sensitive data or are not relevant to the codebase.
 file-validator-core/tests/test_input/
 file-validator-core/tests/test_output/
 file-validator-webserver/tests/test_input/
 file-validator-webserver/tests/test_output/
+reports/
+logs/
+others/
