@@ -55,7 +55,7 @@ file-validator/
 ├── configs/                      # Environment config (.env)
 ├── logs/                         # Application logs (core/, webserver/)
 ├── reports/                      # Generated reports + parquet cache (_cache/)
-├── tools/                        # Start scripts and dev utilities
+├── scripts/                        # Start scripts and dev utilities
 └── pyproject.toml                # Workspace manifest
 ```
 
@@ -86,7 +86,7 @@ uv sync
 
 ```bash
 # Bash (recommended — handles sync, checks imports)
-bash tools/start_server.sh
+bash scripts/start_server.sh
 
 # PowerShell
 .\tools\start_server.ps1
@@ -340,20 +340,20 @@ uv sync
 uv run pytest
 
 # Start dev server (hot-reload)
-bash tools/start_server.sh dev
+bash scripts/start_server.sh dev
 
 # Start production server
-bash tools/start_server.sh prod
+bash scripts/start_server.sh prod
 
 ```
 
 ### Project Tools
 
-| Script                   | Purpose                                          |
-|--------------------------|--------------------------------------------------|
-| `tools/start_server.sh`  | Start server — `dev` or `prod` mode (Bash)       |
-| `tools/start_server.ps1` | Start server — `dev` or `prod` mode (PowerShell) |
-| `tools/start_server.bat` | Start server — `dev` or `prod` mode (CMD)        |
+| Script                     | Purpose                                          |
+|----------------------------|--------------------------------------------------|
+| `scripts/start_server.sh`  | Start server — `dev` or `prod` mode (Bash)       |
+| `scripts/start_server.ps1` | Start server — `dev` or `prod` mode (PowerShell) |
+| `scripts/start_server.bat` | Start server — `dev` or `prod` mode (CMD)        |
 
 ### Key Dependencies
 

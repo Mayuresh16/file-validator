@@ -85,8 +85,8 @@ From the `file-validator` repository root:
 
 ```bash
 # Option 1: Using start script (recommended)
-bash tools/start_server.sh [dev/prod]       # Bash - default dev server
-./tools/start_server.ps1   [dev/prod]       # PowerShell - default dev server
+bash scripts/start_server.sh [dev/prod]       # Bash - default dev server
+./scripts/start_server.ps1   [dev/prod]       # PowerShell - default dev server
 
 # Option 2: FastAPI dev server (auto-reload)
 uv run fastapi dev src/file_validator_webserver/main.py
@@ -701,7 +701,7 @@ uvicorn file_validator_webserver.main:app --reload
 fastapi dev src/file_validator_webserver/main.py
 
 # Or using start script
-bash tools/start_server.sh
+bash scripts/start_server.sh
 ```
 
 ### Building for Production
