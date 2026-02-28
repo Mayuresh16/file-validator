@@ -336,8 +336,17 @@ FileAuditor(
 # Sync workspace
 uv sync
 
-# Run tests
-uv run pytest
+# Run all tests
+bash scripts/run_tests.sh
+
+# Run core package tests only
+bash scripts/run_tests.sh core
+
+# Run webserver package tests only
+bash scripts/run_tests.sh webserver
+
+# Run tests with verbose output
+bash scripts/run_tests.sh all -v
 
 # Start dev server (hot-reload)
 bash scripts/start_server.sh dev
@@ -349,11 +358,13 @@ bash scripts/start_server.sh prod
 
 ### Project Tools
 
-| Script                     | Purpose                                          |
-|----------------------------|--------------------------------------------------|
-| `scripts/start_server.sh`  | Start server — `dev` or `prod` mode (Bash)       |
-| `scripts/start_server.ps1` | Start server — `dev` or `prod` mode (PowerShell) |
-| `scripts/start_server.bat` | Start server — `dev` or `prod` mode (CMD)        |
+| Script                     | Purpose                                                  |
+|----------------------------|----------------------------------------------------------|
+| `scripts/start_server.sh`  | Start server — `dev` or `prod` mode (Bash)               |
+| `scripts/start_server.ps1` | Start server — `dev` or `prod` mode (PowerShell)         |
+| `scripts/start_server.bat` | Start server — `dev` or `prod` mode (CMD)                |
+| `scripts/run_tests.sh`     | Run pytest suite — `all`/`core`/`webserver` (Bash)       |
+| `scripts/run_tests.ps1`    | Run pytest suite — `all`/`core`/`webserver` (PowerShell) |
 
 ### Key Dependencies
 
