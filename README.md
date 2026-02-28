@@ -57,7 +57,6 @@ file-validator/
 ├── configs/                      # Environment config (.env)
 ├── logs/                         # Application logs (core/, webserver/)
 ├── reports/                      # Generated reports + parquet cache (_cache/)
-├── summary_files/                # Development notes
 ├── tools/                        # Start scripts and dev utilities
 └── pyproject.toml                # Workspace manifest
 ```
@@ -385,7 +384,7 @@ uv run ruff format .
 | `aiofiles`             | Async file I/O (web server)          |
 | `ruff`                 | Linting and formatting               |
 
-See [DEVELOPMENT.md](summary_files/DEVELOPMENT.md) for detailed development instructions.
+See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development instructions.
 
 ---
 
@@ -394,7 +393,7 @@ See [DEVELOPMENT.md](summary_files/DEVELOPMENT.md) for detailed development inst
 - [file-validator-core/README.md](file-validator-core/README.md) — Core library
 - [file-validator-webserver/README.md](file-validator-webserver/README.md) — Web UI
 - [report-template-builder/templates/README.md](report-template-builder/templates/README.md) — Template structure
-- [summary_files/DEVELOPMENT.md](summary_files/DEVELOPMENT.md) — Development guide
+- [DEVELOPMENT.md](DEVELOPMENT.md) — Development guide
 
 ---
 
@@ -437,6 +436,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Support
 
-1. Check [DEVELOPMENT.md](./DEVELOPMENT.md) for troubleshooting
+1. Check [DEVELOPMENT.md](DEVELOPMENT.md) for troubleshooting
 2. Review component READMEs for specific features
 3. Contact the author
