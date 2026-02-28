@@ -1,0 +1,11 @@
+/*
+ * File Validator App - Static Styles
+ * Additional styles can be added here if needed.
+ * Main styles are embedded in index.html for self-contained delivery.
+ */
+
+/* Fallback base styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+

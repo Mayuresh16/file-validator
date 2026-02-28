@@ -1,0 +1,259 @@
+# Build system configuration
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Project metadata and dependencies
+[project]
+name = "file-validator-webserver"
+version = "0.1.0"
+description = "Web Server for file validation."
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.13"
+authors = [
+    { name = "Mayuresh Kedari", email = "mayurkedari16@gmail.com" },
+]
+
+dependencies = [
+    "fastapi[standard]>=0.129.0",
+    "file-validator-core",
+]
+
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-asyncio>=0.25.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.0.278",
+    "mypy>=1.10",
+    "pytest>=7.0",
+    "pytest-asyncio>=0.25.0",
+    "coverage>=7.2",
+    "uvicorn>=0.18",
+    "anyio>=3.6",
+    "pre-commit>=3.3",
+]
+
+
+# Tools Installation/Settings
+[tool.hatch.build.targets.wheel]
+packages = ["src/file_validator_webserver"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/file_validator_webserver",
+    "LICENSE",
+]
+
+[tool.uv]
+required-version = ">=0.6.3"
+no-build-isolation-package = ["sphinx-redoc"]
+
+# NOTE: workspace 'sources' and 'workspace' members belong at the repository root
+# (top-level pyproject). Remove package-local declarations to avoid errors where
+# a package references a workspace source but is not declared as a workspace member
+# in the current build context.
+
+#index-url = "https://pypi.org/"
+
+[[tool.uv.index]]
+url = "https://pypi.org/"
+
+
+## ruff settings ##
+[tool.ruff]
+line-length = 110
+extend-exclude = [
+    ".eggs",
+]
+
+[tool.ruff.lint]
+#typing-modules = ["airflow.typing_compat"]
+extend-select = [
+    # Enable entire ruff rule section
+    "I", # Missing required import (auto-fixable)
+    "UP", # Pyupgrade
+    "ASYNC", # subset of flake8-async rules
+    "ISC", # Checks for implicit literal string concatenation (auto-fixable)
+    "TC", # Rules around TYPE_CHECKING blocks
+    "G", # flake8-logging-format rules
+    "LOG", # flake8-logging rules, most of them autofixable
+    "PT", # flake8-pytest-style rules
+    "TID25", # flake8-tidy-imports rules
+    "E", # pycodestyle rules
+    "W", # pycodestyle rules
+    # Warning (PLW) re-implemented in ruff from Pylint
+    "PLW0120", # else clause on loop without a break statement; remove the else and dedent its contents
+    "PLW0127", # Self-assignment of variable
+    "PLW0128", # Redeclared variable {name} in assignment
+    "PLW0129", # Asserting on an empty string literal will never pass
+    "PLW0131", # Named expression used without context
+    "PLW0133", # Missing raise statement on exception
+    "PLW0177", # Comparing against a NaN value; use math.isnan instead
+    "PLW0211", # First argument of a static method should not be named {argument_name}
+    "PLW0245", # super call is missing parentheses
+    "PLW0406", # Module {name} imports itself
+    "PLW0602", # Using global for {name} but no assignment is done
+    "PLW0604", # global at module level is redundant
+    "PLW0642", # Reassigned {} variable in {method_type} method
+    "PLW0711", # Exception to catch is the result of a binary and operation
+    "PLW1501", # {mode} is not a valid mode for open
+    "PLW1507", # Shallow copy of os.environ via copy.copy(os.environ)
+    "PLW1508", # Invalid type for environment variable default; expected str or None
+    "PLW1509", # preexec_fn argument is unsafe when using threads
+    "PLW1510", # subprocess.run without explicit check argument
+    "PLW1641", # Object does not implement __hash__ method
+    "PLW2101", # Threading lock directly created in with statement has no effect
+    "PLW2901", # Outer {outer_kind} variable {name} overwritten by inner {inner_kind} target
+    "PLW3301", # Nested {func} calls can be flattened
+    # Per rule enables
+    "RUF006", # Checks for asyncio dangling task
+    "RUF015", # Checks for unnecessary iterable allocation for first element
+    "RUF019", # Checks for unnecessary key check
+    "RUF100", # Unused noqa (auto-fixable)
+    # We ignore more pydocstyle than we enable, so be more selective at what we enable
+    "D1",
+    "D2",
+    "D213", # Conflicts with D212.  Both can not be enabled.
+    "D3",
+    "D400",
+    "D401",
+    "D402",
+    "D403",
+    "D412",
+    "D419",
+    "PGH004", # Use specific rule codes when using noqa
+    "PGH005", # Invalid unittest.mock.Mock methods/attributes/properties
+    "S101", # Checks use `assert` outside the test cases, test cases should be added into the exclusions
+    "SIM107", # Don't use `return` in `try`-`except` and `finally`
+    "SIM300", # Checks for conditions that position a constant on the left-hand side of the comparison
+    # operator, rather than the right-hand side.
+    "B004", # Checks for use of hasattr(x, "__call__") and replaces it with callable(x)
+    "B006", # Checks for uses of mutable objects as function argument defaults.
+    "B007", # Checks for unused variables in the loop
+    "B012", # Checks for `break`, `continue`, and `return` statements in `finally` blocks
+    "B017", # Checks for pytest.raises context managers that catch Exception or BaseException.
+    "B019", # Use of functools.lru_cache or functools.cache on methods can lead to memory leaks
+    "B028", # No explicit stacklevel keyword argument found
+    "TRY002", # Prohibit use of `raise Exception`, use specific exceptions instead.
+    "RET505", # Unnecessary {branch} after return statement
+    "RET506", # Unnecessary {branch} after raise statement
+    "RET507", # Unnecessary {branch} after continue statement
+    "RET508", # Unnecessary {branch} after break statement
+]
+ignore = [
+    "D100", # Unwanted; Docstring at the top of every file.
+    "D102", # Unwanted; Missing docstring in public method
+    "D103", # Unwanted; Missing docstring in public function
+    "D104", # Unwanted; Docstring at the top of every `__init__.py` file.
+    "D105", # Unwanted; See https://lists.apache.org/thread/8jbg1dd2lr2cfydtqbjxsd6pb6q2wkc3
+    "D107", # Unwanted; Docstring in every constructor is unnecessary if the class has a docstring.
+    "D203", # Conflicts with D211.  Both can not be enabled.
+    "D212", # Conflicts with D213.  Both can not be enabled.
+    "E731", # Do not assign a lambda expression, use a def
+    "TC003", # Do not move imports from stdlib to TYPE_CHECKING block
+    "PT007", # Wrong type of values in @pytest.mark.parametrize
+    "PT013", # silly rule prohibiting e.g. `from pytest import param`
+    "PT019", # fixture without value is injected as parameter, use @pytest.mark.usefixtures instead
+    # Rules below explicitly set off which could overlap with Ruff's formatter
+    # as it recommended by https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+    # Except ISC rules
+    "W191",
+    "E111",
+    "E114",
+    "E117",
+    "D206",
+    "D300",
+    "Q000",
+    "Q001",
+    "Q002",
+    "Q003",
+    "COM812",
+    "COM819",
+    "E501", # Formatted code may exceed the line length, leading to line-too-long (E501) errors.
+    "ASYNC110", # TODO: Use `anyio.Event` instead of awaiting `anyio.sleep` in a `while` loop
+    "SIM105", # Use contextlib.suppress({exception}) instead of try-except-pass
+]
+unfixable = [
+    # PT022 replace empty `yield` to empty `return`. Might be fixed with a combination of PLR1711
+    # In addition, it can't do anything with invalid typing annotations, protected by mypy.
+    "PT022",
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint.isort]
+#required-imports = ["from __future__ import annotations"]
+combine-as-imports = true
+
+
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder",
+    "testing"
+]
+
+known-first-party = ["file_validator", "file_validator_webserver"]
+
+# Make sure we put the "dev" imports at the end, not as a third-party module
+[tool.ruff.lint.isort.sections]
+testing = ["dev", "tests_common", "tests", "system", "unit", "integration"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+# Disallow all relative imports.
+ban-relative-imports = "all"
+
+[tool.ruff.lint.flake8-type-checking]
+exempt-modules = ["typing", "typing_extensions", "sqlalchemy.orm.Mapped"]
+
+[tool.ruff.lint.flake8-pytest-style]
+mark-parentheses = false
+fixture-parentheses = false
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["S101"]
+
+## Pytest settings ##
+[tool.pytest]
+addopts = [
+    "--tb=short",
+    "-rasl",
+    "--verbosity=2",
+    # Disable `flaky` plugin for pytest. This plugin conflicts with `rerunfailures` because provide the same marker.
+    "-p", "no:flaky",
+    # Disable `nose` builtin plugin for pytest. This feature is deprecated in 7.2 and will be removed in pytest>=8
+    "-p", "no:nose",
+    # Disable support of a legacy `LocalPath` in favor of stdlib `pathlib.Path`.
+    "-p", "no:legacypath",
+    # Disable warnings summary, because we use our warning summary.
+    "--disable-warnings",
+    "--asyncio-mode=strict",
+    "--ignore-glob=**/tests/system/*",
+    "--ignore-glob=tests/system/*",
+]
+
+log_level = "INFO"
+
+python_files = [
+    "test_*.py",
+    "example_*.py",
+]
+
+pythonpath = [
+    "file-validator-core/src",
+    "file-validator-core/tests",
+    "file-validator-webserver/src",
+    "file-validator-webserver/tests",
+]
+testpaths = [
+    "tests",
+]
+asyncio_default_fixture_loop_scope = "function"

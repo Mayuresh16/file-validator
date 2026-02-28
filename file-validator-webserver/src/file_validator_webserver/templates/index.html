@@ -1,0 +1,2229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Validator</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <style>
+      /* ============================================
+           BASE STYLES
+           ============================================ */
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px;
+        background-color: #f5f5f5;
+        margin: 0;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: #2c3e50;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+        font-size: 28px;
+      }
+
+      /* ============================================
+           HEADER SECTION
+           ============================================ */
+      .header-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px 25px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .header-section h1 {
+        color: white;
+        border-bottom: none;
+        margin: 0;
+        padding: 0;
+        font-size: 24px;
+      }
+
+      .header-section .subtitle {
+        opacity: 0.9;
+        margin-top: 8px;
+        font-size: 14px;
+      }
+
+      /* ============================================
+           FORM SECTION
+           ============================================ */
+      .form-section {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-section h2 {
+        margin-top: 0;
+        color: #34495e;
+        font-size: 18px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #34495e;
+        font-size: 14px;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .form-group input::placeholder {
+        color: #aaa;
+      }
+
+      .form-group .hint {
+        font-size: 12px;
+        color: #7f8c8d;
+        margin-top: 4px;
+      }
+
+      .form-row {
+        grid-column: 1 / -1;
+      }
+
+      /* ============================================
+           FILE SOURCE SELECTOR
+           ============================================ */
+      .file-source-selector {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .file-source-btn {
+        flex: 1;
+        padding: 10px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        background: #f8f9fa;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .file-source-btn:hover {
+        border-color: #667eea;
+        background: #f0f0ff;
+      }
+
+      .file-source-btn.active {
+        border-color: #667eea;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      /* ============================================
+           FILE INPUT WRAPPER
+           ============================================ */
+      .file-input-wrapper {
+        display: none;
+        border: 2px dashed #667eea;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.05) 0%,
+          rgba(118, 75, 162, 0.05) 100%
+        );
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .file-input-wrapper:hover {
+        border-color: #764ba2;
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.1) 0%,
+          rgba(118, 75, 162, 0.1) 100%
+        );
+      }
+
+      .file-input-wrapper.has-file {
+        border-style: solid;
+        border-color: #27ae60;
+        background: linear-gradient(
+          135deg,
+          rgba(39, 174, 96, 0.05) 0%,
+          rgba(46, 204, 113, 0.05) 100%
+        );
+      }
+
+      .file-input-wrapper .file-icon {
+        font-size: 32px;
+        margin-bottom: 10px;
+      }
+
+      .file-input-wrapper .file-label {
+        font-size: 14px;
+        color: #667eea;
+        font-weight: 600;
+      }
+
+      .file-input-wrapper.has-file .file-label {
+        color: #27ae60;
+      }
+
+      .file-input-wrapper .file-name {
+        font-size: 13px;
+        color: #7f8c8d;
+        margin-top: 8px;
+        word-break: break-all;
+      }
+
+      .file-input-wrapper .file-size {
+        font-size: 12px;
+        color: #95a5a6;
+        margin-top: 4px;
+      }
+
+      .file-input-wrapper input[type="file"] {
+        display: none;
+      }
+
+      .file-input-wrapper .browse-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .file-input-wrapper .browse-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
+
+      .file-input-wrapper .clear-btn {
+        display: none;
+        margin-top: 10px;
+        padding: 6px 12px;
+        background: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 15px;
+        font-size: 12px;
+        cursor: pointer;
+        margin-left: 8px;
+      }
+
+      .file-input-wrapper.has-file .clear-btn {
+        display: inline-block;
+      }
+
+      /* ============================================
+           UPLOAD STATUS
+           ============================================ */
+      .upload-status {
+        display: none;
+        margin-top: 10px;
+        padding: 10px 15px;
+        border-radius: 6px;
+        font-size: 13px;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .upload-status.uploading {
+        display: flex;
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+
+      .upload-status.success {
+        display: flex;
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .upload-status.error {
+        display: flex;
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .upload-status .spinner-small {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #bee5eb;
+        border-top-color: #0c5460;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      /* ============================================
+           BUTTONS
+           ============================================ */
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .btn-secondary {
+        background: #f8f9fa;
+        color: #34495e;
+        border: 2px solid #e0e0e0;
+      }
+
+      .btn-secondary:hover {
+        background: #e9ecef;
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        color: white;
+      }
+
+      .btn-info {
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        color: white;
+      }
+
+      .btn-info:hover {
+        background: linear-gradient(135deg, #2980b9 0%, #2471a3 100%);
+      }
+
+      .form-actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 12px;
+      }
+
+      /* ============================================
+           STATUS SECTION
+           ============================================ */
+      .status-section {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+
+      .status-section.visible {
+        display: block;
+      }
+
+      .status-section h2 {
+        margin-top: 0;
+        color: #34495e;
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+      }
+
+      .status-pending {
+        background: #fff3cd;
+        border-left: 4px solid #f39c12;
+      }
+
+      .status-running {
+        background: #d1ecf1;
+        border-left: 4px solid #17a2b8;
+      }
+
+      .status-completed {
+        background: #d4edda;
+        border-left: 4px solid #27ae60;
+      }
+
+      .status-error {
+        background: #f8d7da;
+        border-left: 4px solid #c0392b;
+      }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ============================================
+           PROGRESS BAR
+           ============================================ */
+      .progress-container {
+        margin-top: 15px;
+      }
+
+      .progress-bar-wrapper {
+        background: #e0e0e0;
+        border-radius: 10px;
+        height: 20px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .progress-bar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .progress-text {
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        line-height: 20px;
+      }
+
+      .progress-message {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #7f8c8d;
+      }
+
+      /* ============================================
+           RESULTS SECTION
+           ============================================ */
+      .results-section {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+
+      .results-section.visible {
+        display: block;
+      }
+
+      .results-section h2 {
+        margin-top: 0;
+        color: #34495e;
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+
+      .summary-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .stat-box {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #3498db;
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 28px;
+        font-weight: bold;
+        color: #3498db;
+      }
+
+      .stat-label {
+        font-size: 13px;
+        color: #7f8c8d;
+        margin-top: 5px;
+      }
+
+      .stat-box.stat-source {
+        border-left-color: #9b59b6;
+      }
+
+      .stat-box.stat-source .stat-value {
+        color: #9b59b6;
+      }
+
+      .stat-box.stat-target {
+        border-left-color: #3498db;
+      }
+
+      .stat-box.stat-target .stat-value {
+        color: #3498db;
+      }
+
+      .stat-box.stat-matching {
+        border-left-color: #27ae60;
+      }
+
+      .stat-box.stat-matching .stat-value {
+        color: #27ae60;
+      }
+
+      .stat-box.stat-missing-source {
+        border-left-color: #f39c12;
+      }
+
+      .stat-box.stat-missing-source .stat-value {
+        color: #f39c12;
+      }
+
+      .stat-box.stat-missing-target {
+        border-left-color: #e67e22;
+      }
+
+      .stat-box.stat-missing-target .stat-value {
+        color: #e67e22;
+      }
+
+      .stat-box.stat-percentage {
+        border-left-color: #27ae60;
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+      }
+
+      .stat-box.stat-percentage .stat-value {
+        color: #27ae60;
+      }
+
+      .report-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      /* ============================================
+           INSIGHTS CARDS
+           ============================================ */
+      .insight-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .insight-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .insight-card.success {
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+      }
+
+      .insight-card.warning {
+        background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+      }
+
+      .insight-card.error {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      }
+
+      .insight-card h3 {
+        margin: 0 0 10px 0;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .insight-card p {
+        margin: 0;
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      /* ============================================
+           DARK MODE
+           ============================================ */
+      body.dark-mode {
+        background-color: #1a1a2e;
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .form-section,
+      body.dark-mode .status-section,
+      body.dark-mode .results-section {
+        background: #16213e;
+      }
+
+      body.dark-mode .form-group label {
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .form-group input,
+      body.dark-mode .form-group select {
+        background: #1a1a2e;
+        border-color: #2a2a4e;
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .stat-box {
+        background: #1a1a2e;
+      }
+
+      body.dark-mode .file-source-btn {
+        background: #1a1a2e;
+        border-color: #2a2a4e;
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .file-source-btn:hover {
+        background: #2a2a4e;
+      }
+
+      body.dark-mode .file-source-btn.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      body.dark-mode .file-input-wrapper {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.1) 0%,
+          rgba(118, 75, 162, 0.1) 100%
+        );
+        border-color: #667eea;
+      }
+
+      body.dark-mode .progress-bar-wrapper {
+        background: #2a2a4e;
+      }
+
+      body.dark-mode .form-section h2,
+      body.dark-mode .status-section h2 {
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .status-indicator {
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .status-pending {
+        background: #3d3520;
+        border-left-color: #f39c12;
+      }
+
+      body.dark-mode .status-running {
+        background: #1a2e35;
+        border-left-color: #17a2b8;
+      }
+
+      body.dark-mode .status-completed {
+        background: #1a3525;
+        border-left-color: #27ae60;
+      }
+
+      body.dark-mode .status-error {
+        background: #3d1a1e;
+        border-left-color: #c0392b;
+      }
+
+      body.dark-mode .progress-message {
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .results-section h2 {
+        color: #e0e0e0;
+      }
+
+      /* ============================================
+           THEME TOGGLE
+           ============================================ */
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        transition: transform 0.3s;
+      }
+
+      .theme-toggle:hover {
+        transform: scale(1.1);
+      }
+
+      /* ============================================
+           RESPONSIVE
+           ============================================ */
+      @media (max-width: 768px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .summary-stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      /* ============================================
+           REPORT VIEWER (Full-screen iframe)
+           ============================================ */
+      .report-viewer {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        z-index: 2000;
+        flex-direction: column;
+      }
+
+      .report-viewer.visible {
+        display: flex;
+      }
+
+      .report-viewer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .report-viewer-header h2 {
+        margin: 0;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .report-viewer-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .report-viewer-actions .btn {
+        padding: 8px 16px;
+        font-size: 13px;
+      }
+
+      .report-viewer-actions .btn-back {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .report-viewer-actions .btn-back:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .report-viewer-actions .btn-download {
+        background: #27ae60;
+        color: white;
+      }
+
+      .report-viewer-actions .btn-download:hover {
+        background: #219a52;
+      }
+
+      .report-viewer-actions .btn-download-html {
+        background: #3498db;
+      }
+
+      .report-viewer-actions .btn-download-html:hover {
+        background: #2980b9;
+      }
+
+      .report-viewer-iframe {
+        flex: 1;
+        border: none;
+        width: 100%;
+        height: calc(100vh - 60px);
+      }
+
+      body.dark-mode .report-viewer {
+        background: #1a1a2e;
+      }
+
+      /* ============================================
+           RECENT JOBS
+           ============================================ */
+      .recent-reports {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-mode .recent-reports {
+        background: #16213e;
+      }
+
+      .recent-reports h2 {
+        margin-top: 0;
+        color: #34495e;
+        font-size: 18px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      body.dark-mode .recent-reports h2 {
+        color: #e0e0e0;
+      }
+
+      .recent-reports .empty-state {
+        text-align: center;
+        padding: 30px;
+        color: #7f8c8d;
+        font-size: 14px;
+      }
+
+      .report-list {
+        max-height: 500px;
+        overflow-y: auto;
+      }
+
+      .report-item {
+        padding: 14px 18px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background: #f8f9fa;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        border-left: 4px solid #27ae60;
+      }
+
+      .report-item:hover {
+        transform: translateX(4px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-mode .report-item {
+        background: #1a1a2e;
+        border-left-color: #2ecc71;
+      }
+
+      body.dark-mode .report-item:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .report-item-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .report-item-id {
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+        color: #2c3e50;
+        font-weight: 600;
+        word-break: break-all;
+      }
+
+      body.dark-mode .report-item-id {
+        color: #e0e0e0;
+      }
+
+      .report-item-meta {
+        font-size: 12px;
+        color: #7f8c8d;
+        margin-top: 4px;
+        display: flex;
+        gap: 15px;
+      }
+
+      .report-item-actions {
+        display: flex;
+        gap: 8px;
+        flex-shrink: 0;
+        margin-left: 15px;
+      }
+
+      .report-item-actions .btn {
+        padding: 6px 14px;
+        font-size: 12px;
+        border-radius: 20px;
+      }
+
+      .report-status {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .report-status.completed {
+        background: #d4edda;
+        color: #27ae60;
+      }
+
+      body.dark-mode .report-status.completed {
+        background: rgba(39, 174, 96, 0.2);
+        color: #2ecc71;
+      }
+
+      .btn-view {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-view:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 8px rgba(102, 126, 234, 0.3);
+      }
+
+      /* ============================================
+           FOOTER
+           ============================================ */
+
+      .site-footer {
+        width: 100%;
+        margin-top: 40px;
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: #ecf0f1;
+        text-align: center;
+        padding: 14px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .site-footer a {
+        color: #5dade2;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .site-footer a:hover {
+        color: #85c1e9;
+        text-decoration: underline;
+      }
+
+      body.dark-mode .site-footer {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #d5d8dc;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4);
+      }
+
+      body.dark-mode .site-footer a {
+        color: #8fa4f0;
+        font-weight: 600;
+      }
+
+      body.dark-mode .site-footer a:hover {
+        color: #aab8f5;
+      }
+
+      /* ============================================
+           DOWNLOAD ERROR MODAL
+           ============================================ */
+      .download-error-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 5000;
+        align-items: center;
+        justify-content: center;
+        animation: modalFadeIn 0.2s ease;
+      }
+
+      .download-error-modal.visible {
+        display: flex;
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .download-error-content {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 32px 36px;
+        max-width: 440px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        animation: modalSlideDown 0.25s ease;
+      }
+
+      @keyframes modalSlideDown {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .download-error-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        line-height: 1;
+      }
+
+      .download-error-content h3 {
+        margin: 0 0 12px 0;
+        font-size: 19px;
+        font-weight: 700;
+        color: #c0392b;
+      }
+
+      .download-error-content p {
+        margin: 0 0 24px 0;
+        font-size: 14px;
+        color: #555555;
+        line-height: 1.7;
+      }
+
+      .download-error-close-btn {
+        padding: 10px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .download-error-close-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      }
+
+      .download-error-close-btn:active {
+        transform: translateY(0);
+      }
+
+      /* ---- Dark mode overrides ---- */
+      body.dark-mode .download-error-modal {
+        background: rgba(0, 0, 0, 0.7);
+      }
+
+      body.dark-mode .download-error-content {
+        background: #1a1a2e;
+        border-color: #2a2a4e;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      }
+
+      body.dark-mode .download-error-content h3 {
+        color: #f87171;
+      }
+
+      body.dark-mode .download-error-content p {
+        color: #d0d0d0;
+      }
+
+      body.dark-mode .download-error-close-btn {
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+      }
+
+      body.dark-mode .download-error-close-btn:hover {
+        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
+      }
+    </style>
+  </head>
+
+  <body>
+    <button
+      class="theme-toggle"
+      onclick="toggleDarkMode()"
+      title="Toggle Dark Mode"
+    >
+      🌙
+    </button>
+
+    <div class="container">
+      <div class="header-section">
+        <h1>📊 File Validator</h1>
+        <div class="subtitle">
+          Compare source and target files with detailed validation reports
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>⚙️ Configuration</h2>
+        <form id="validator-form">
+          <div class="form-grid">
+            <!-- Job Name -->
+            <div class="form-group form-row">
+              <label>Job Name <span style="color: #e74c3c">*</span></label>
+              <input
+                type="text"
+                name="job_name"
+                id="job_name"
+                value=""
+                placeholder="Enter a name for this validation job"
+                required
+              />
+              <div class="hint">
+                Job ID will be:
+                &lt;job_name&gt;_&lt;filename&gt;_&lt;timestamp&gt;
+              </div>
+            </div>
+
+            <!-- Source File -->
+            <div class="form-group form-row">
+              <label>Source File <span style="color: #e74c3c">*</span></label>
+              <div class="file-source-selector">
+                <button
+                  type="button"
+                  class="file-source-btn active"
+                  data-target="source"
+                  data-type="gcs"
+                  onclick="setFileSource('source', 'gcs')"
+                >
+                  ☁️ GCS
+                </button>
+                <button
+                  type="button"
+                  class="file-source-btn"
+                  data-target="source"
+                  data-type="local"
+                  onclick="setFileSource('source', 'local')"
+                >
+                  💻 Local
+                </button>
+              </div>
+              <!-- GCS Input -->
+              <input
+                type="text"
+                name="source_path"
+                id="source_path"
+                placeholder="gs://bucket/path/file.csv"
+              />
+              <!-- Local File Input -->
+              <div
+                class="file-input-wrapper"
+                id="source_file_wrapper"
+                onclick="document.getElementById('source_file').click()"
+              >
+                <div class="file-icon">📁</div>
+                <div class="file-label">Click to browse or drag & drop</div>
+                <div class="file-name" id="source_file_name">
+                  No file selected
+                </div>
+                <div class="file-size" id="source_file_size"></div>
+                <input
+                  type="file"
+                  id="source_file"
+                  accept=".csv,.gz,.Z,.bz2,.txt"
+                  onchange="handleFileSelect('source', this)"
+                />
+                <button
+                  type="button"
+                  class="browse-btn"
+                  onclick="
+                    event.stopPropagation();
+                    document.getElementById('source_file').click();
+                  "
+                >
+                  📂 Browse Files
+                </button>
+                <button
+                  type="button"
+                  class="clear-btn"
+                  onclick="
+                    event.stopPropagation();
+                    clearFile('source');
+                  "
+                >
+                  ✕ Clear
+                </button>
+              </div>
+              <div class="upload-status" id="source_upload_status">
+                <div class="spinner-small"></div>
+                <span>Uploading...</span>
+              </div>
+              <div class="hint" id="source_hint">
+                Enter GCS URI (gs://bucket/path). Compressed files (.gz, .Z)
+                supported.
+              </div>
+            </div>
+
+            <!-- Target File -->
+            <div class="form-group form-row">
+              <label>Target File <span style="color: #e74c3c">*</span></label>
+              <div class="file-source-selector">
+                <button
+                  type="button"
+                  class="file-source-btn active"
+                  data-target="target"
+                  data-type="gcs"
+                  onclick="setFileSource('target', 'gcs')"
+                >
+                  ☁️ GCS
+                </button>
+                <button
+                  type="button"
+                  class="file-source-btn"
+                  data-target="target"
+                  data-type="local"
+                  onclick="setFileSource('target', 'local')"
+                >
+                  💻 Local
+                </button>
+              </div>
+              <!-- GCS Input -->
+              <input
+                type="text"
+                name="target_path"
+                id="target_path"
+                placeholder="gs://bucket/path/file.csv"
+              />
+              <!-- Local File Input -->
+              <div
+                class="file-input-wrapper"
+                id="target_file_wrapper"
+                onclick="document.getElementById('target_file').click()"
+              >
+                <div class="file-icon">📁</div>
+                <div class="file-label">Click to browse or drag & drop</div>
+                <div class="file-name" id="target_file_name">
+                  No file selected
+                </div>
+                <div class="file-size" id="target_file_size"></div>
+                <input
+                  type="file"
+                  id="target_file"
+                  accept=".csv,.gz,.Z,.bz2,.txt"
+                  onchange="handleFileSelect('target', this)"
+                />
+                <button
+                  type="button"
+                  class="browse-btn"
+                  onclick="
+                    event.stopPropagation();
+                    document.getElementById('target_file').click();
+                  "
+                >
+                  📂 Browse Files
+                </button>
+                <button
+                  type="button"
+                  class="clear-btn"
+                  onclick="
+                    event.stopPropagation();
+                    clearFile('target');
+                  "
+                >
+                  ✕ Clear
+                </button>
+              </div>
+              <div class="upload-status" id="target_upload_status">
+                <div class="spinner-small"></div>
+                <span>Uploading...</span>
+              </div>
+              <div class="hint" id="target_hint">
+                Enter GCS URI (gs://bucket/path). Compressed files (.gz, .Z)
+                supported.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Primary Keys <span style="color: #e74c3c">*</span></label>
+              <input
+                type="text"
+                name="primary_keys"
+                placeholder="column1, column2"
+                required
+              />
+              <div class="hint">
+                Comma-separated column names used to match rows
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Delimiter</label>
+              <input type="text" name="delimiter" value="," placeholder="," />
+            </div>
+
+            <div class="form-group">
+              <label>Header Rows</label>
+              <input type="number" name="header_rows" value="0" min="0" />
+              <div class="hint">Number of header rows in the file</div>
+            </div>
+
+            <div class="form-group">
+              <label>File Type</label>
+              <select
+                name="file_type"
+                id="file_type"
+                onchange="toggleColumnSpecInput()"
+              >
+                <option value="csv">CSV</option>
+                <option value="fwf">FWF (Fixed-width)</option>
+              </select>
+            </div>
+            <div
+              class="form-group"
+              id="column_spec_group"
+              style="display: none"
+            >
+              <label>Column Specification (comma-separated lengths)</label>
+              <input
+                type="text"
+                name="column_specification"
+                id="column_specification"
+                placeholder="e.g. 10,5,8"
+              />
+              <div class="hint">
+                Specify column lengths for FWF. Example: 10,5,8
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Trailer Patterns</label>
+              <input
+                type="text"
+                name="trailer_patterns"
+                placeholder="TRAILER, END_OF_FILE"
+              />
+              <div class="hint">
+                Comma-separated patterns to identify trailer rows
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Encoding</label>
+              <select name="encoding" id="encoding">
+                <option value="utf-8" selected>UTF-8 (default)</option>
+                <option value="iso-8859-1">ISO-8859-1 (Latin)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Compression</label>
+              <select name="compression">
+                <option value="">Auto-detect</option>
+                <option value="gzip">GZIP (.gz)</option>
+                <option value="compress">Unix Compress (.Z)</option>
+                <option value="bzip2">BZIP2 (.bz2)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="submit-btn">
+              🚀 Start Validation
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="resetForm()"
+            >
+              🔄 Reset
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="status-section" id="status-section">
+        <h2>📋 Job Status</h2>
+        <div class="status-indicator" id="status-indicator">
+          <div class="spinner"></div>
+          <span id="status-text">Initializing...</span>
+        </div>
+        <div class="progress-container" id="progress-container">
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+            <span class="progress-text" id="progress-text">0%</span>
+          </div>
+          <div class="progress-message" id="progress-message">Waiting...</div>
+        </div>
+      </div>
+
+      <div class="results-section" id="results-section">
+        <h2>📈 Validation Results</h2>
+        <div class="summary-stats" id="summary-stats"></div>
+        <div class="insight-cards" id="insight-cards"></div>
+        <div class="report-actions">
+          <a id="report-link" href="#" class="btn btn-primary" target="_blank">
+            📄 View Full Report
+          </a>
+          <a id="download-excel-link" href="#" class="btn btn-success" download>
+            📊 Download Excel Report
+          </a>
+          <a id="download-html-link" href="#" class="btn btn-info" download>
+            📄 Download HTML Report
+          </a>
+        </div>
+      </div>
+
+      <!-- Server-backed recent jobs -->
+      <div class="recent-reports" id="recent-reports">
+        <h2>📜 Recent Jobs</h2>
+        <div class="report-list" id="report-list">
+          <div class="empty-state">Loading reports...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full-screen Report Viewer -->
+    <div class="report-viewer" id="report-viewer">
+      <div class="report-viewer-header">
+        <h2>📄 Validation Report</h2>
+        <div class="report-viewer-actions">
+          <button class="btn btn-back" onclick="closeReportViewer()">
+            ← Back to Results
+          </button>
+          <a
+            id="viewer-download-excel-btn"
+            href="#"
+            class="btn btn-download"
+            download
+          >
+            📊 Download Excel
+          </a>
+          <a
+            id="viewer-download-html-btn"
+            href="#"
+            class="btn btn-download btn-download-html"
+            download
+          >
+            📄 Download HTML
+          </a>
+        </div>
+      </div>
+      <iframe
+        id="report-iframe"
+        class="report-viewer-iframe"
+        src="about:blank"
+      ></iframe>
+    </div>
+
+    <!-- Download Error Modal -->
+    <div class="download-error-modal" id="download-error-modal">
+      <div class="download-error-content">
+        <div class="download-error-icon">⚠️</div>
+        <h3>Report Not Available</h3>
+        <p>
+          The requested report is no longer available for download.<br />
+          Re-run the validation job to generate it again.
+        </p>
+        <button
+          class="download-error-close-btn"
+          onclick="closeDownloadErrorModal()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // File source and upload state
+      const fileSourceState = {
+        source: "gcs",
+        target: "gcs",
+      };
+
+      const uploadedFiles = {
+        source: null,
+        target: null,
+      };
+
+      // Format file size
+      function formatFileSize(bytes) {
+        if (bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+      }
+
+      // Set file source (GCS or Local)
+      function setFileSource(target, type) {
+        fileSourceState[target] = type;
+
+        document
+          .querySelectorAll(`.file-source-btn[data-target="${target}"]`)
+          .forEach((btn) => {
+            btn.classList.toggle("active", btn.dataset.type === type);
+          });
+
+        const pathInput = document.getElementById(`${target}_path`);
+        const fileWrapper = document.getElementById(`${target}_file_wrapper`);
+        const hintEl = document.getElementById(`${target}_hint`);
+
+        if (type === "gcs") {
+          pathInput.style.display = "";
+          fileWrapper.style.display = "none";
+          hintEl.textContent =
+            "Enter GCS URI (gs://bucket/path). Compressed files (.gz, .Z) supported.";
+          // Clear uploaded file reference
+          uploadedFiles[target] = null;
+        } else {
+          pathInput.style.display = "none";
+          fileWrapper.style.display = "block";
+          hintEl.textContent =
+            "Browse and select a local file. Compressed files (.gz, .Z) supported.";
+        }
+      }
+
+      // Handle file selection
+      function handleFileSelect(target, input) {
+        const file = input.files[0];
+        const wrapper = document.getElementById(`${target}_file_wrapper`);
+        const nameEl = document.getElementById(`${target}_file_name`);
+        const sizeEl = document.getElementById(`${target}_file_size`);
+
+        if (file) {
+          wrapper.classList.add("has-file");
+          wrapper.querySelector(".file-icon").textContent = "✅";
+          wrapper.querySelector(".file-label").textContent = "File selected";
+          nameEl.textContent = file.name;
+          sizeEl.textContent = formatFileSize(file.size);
+
+          // Store file reference for upload
+          uploadedFiles[target] = {
+            file: file,
+            name: file.name,
+            uploaded: false,
+            path: null,
+          };
+        }
+      }
+
+      // Clear file selection
+      function clearFile(target) {
+        const wrapper = document.getElementById(`${target}_file_wrapper`);
+        const input = document.getElementById(`${target}_file`);
+        const nameEl = document.getElementById(`${target}_file_name`);
+        const sizeEl = document.getElementById(`${target}_file_size`);
+        const statusEl = document.getElementById(`${target}_upload_status`);
+
+        wrapper.classList.remove("has-file");
+        wrapper.querySelector(".file-icon").textContent = "📁";
+        wrapper.querySelector(".file-label").textContent =
+          "Click to browse or drag & drop";
+        nameEl.textContent = "No file selected";
+        sizeEl.textContent = "";
+        input.value = "";
+        statusEl.className = "upload-status";
+        uploadedFiles[target] = null;
+      }
+
+      // Upload file to server
+      async function uploadFile(target) {
+        const fileData = uploadedFiles[target];
+        if (!fileData || !fileData.file) return null;
+
+        const statusEl = document.getElementById(`${target}_upload_status`);
+        statusEl.className = "upload-status uploading";
+        statusEl.innerHTML =
+          '<div class="spinner-small"></div><span>Uploading ' +
+          fileData.name +
+          "...</span>";
+
+        try {
+          const formData = new FormData();
+          formData.append("file", fileData.file);
+
+          const resp = await fetch("/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await resp.json();
+
+          if (result.success) {
+            statusEl.className = "upload-status success";
+            statusEl.innerHTML =
+              "✅ <span>Uploaded: " + result.filename + "</span>";
+            uploadedFiles[target].uploaded = true;
+            uploadedFiles[target].path = result.path;
+            return { path: result.path, filename: result.filename };
+          } else {
+            statusEl.className = "upload-status error";
+            statusEl.innerHTML =
+              "❌ <span>Upload failed: " + result.error + "</span>";
+            return null;
+          }
+        } catch (error) {
+          statusEl.className = "upload-status error";
+          statusEl.innerHTML =
+            "❌ <span>Upload failed: " + error.message + "</span>";
+          return null;
+        }
+      }
+
+      // Reset form
+      function resetForm() {
+        document.getElementById("validator-form").reset();
+        clearFile("source");
+        clearFile("target");
+        setFileSource("source", "gcs");
+        setFileSource("target", "gcs");
+        document.getElementById("status-section").classList.remove("visible");
+        document.getElementById("results-section").classList.remove("visible");
+      }
+
+      // Theme toggle
+      function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+        const isDark = document.body.classList.contains("dark-mode");
+        document.querySelector(".theme-toggle").textContent = isDark
+          ? "☀️"
+          : "🌙";
+        localStorage.setItem("darkMode", isDark);
+      }
+
+      // Load saved theme
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark-mode");
+        document.querySelector(".theme-toggle").textContent = "☀️";
+      }
+
+      // Update progress bar
+      function updateProgress(progress, message) {
+        const progressBar = document.getElementById("progress-bar");
+        const progressText = document.getElementById("progress-text");
+        const progressMessage = document.getElementById("progress-message");
+
+        progressBar.style.width = `${progress}%`;
+        progressText.textContent = `${progress}%`;
+        progressMessage.textContent = message || "Processing...";
+      }
+
+      // Toggle column specification input
+      function toggleColumnSpecInput() {
+        const fileType = document.getElementById("file_type").value;
+        const colSpecGroup = document.getElementById("column_spec_group");
+        colSpecGroup.style.display = fileType === "fwf" ? "" : "none";
+      }
+      document
+        .getElementById("file_type")
+        .addEventListener("change", toggleColumnSpecInput);
+
+      // Form submission
+      document.getElementById("validator-form").onsubmit = async function (e) {
+        e.preventDefault();
+        const form = e.target;
+        const submitBtn = document.getElementById("submit-btn");
+
+        // Validate required fields
+        const jobName = form.job_name.value.trim();
+        const primaryKeys = form.primary_keys.value.trim();
+
+        if (!jobName) {
+          alert("Please enter a Job Name");
+          return;
+        }
+
+        if (!primaryKeys) {
+          alert("Please enter Primary Keys");
+          return;
+        }
+
+        let source_path = form.source_path.value.trim();
+        let source_filename = null;
+        let target_path = form.target_path.value.trim();
+        let target_filename = null;
+
+        // Handle source file
+        if (fileSourceState.source === "local") {
+          if (!uploadedFiles.source || !uploadedFiles.source.file) {
+            alert("Please select a source file");
+            return;
+          }
+          const upload = await uploadFile("source");
+          if (!upload) return;
+          source_path = upload.path;
+          source_filename = upload.filename;
+        } else {
+          if (!source_path) {
+            alert("Please enter a source file path");
+            return;
+          }
+        }
+
+        // Handle target file
+        if (fileSourceState.target === "local") {
+          if (!uploadedFiles.target || !uploadedFiles.target.file) {
+            alert("Please select a target file");
+            return;
+          }
+          const upload = await uploadFile("target");
+          if (!upload) return;
+          target_path = upload.path;
+          target_filename = upload.filename;
+        } else {
+          if (!target_path) {
+            alert("Please enter a target file path");
+            return;
+          }
+        }
+
+        const data = {
+          job_name: jobName,
+          source_path,
+          source_filename,
+          target_path,
+          target_filename,
+          header_rows: parseInt(form.header_rows.value),
+          trailer_patterns: form.trailer_patterns.value
+            ? form.trailer_patterns.value.split(",").map((s) => s.trim())
+            : [],
+          delimiter: form.delimiter.value,
+          file_type: form.file_type.value,
+          encoding: form.encoding.value,
+          compression: form.compression.value || null,
+          primary_keys: form.primary_keys.value.split(",").map((s) => s.trim()),
+          column_specification: form.column_specification
+            ? form.column_specification.value
+            : undefined,
+        };
+
+        // Show status section
+        document.getElementById("status-section").classList.add("visible");
+        document.getElementById("results-section").classList.remove("visible");
+
+        const statusIndicator = document.getElementById("status-indicator");
+        statusIndicator.className = "status-indicator status-pending";
+        statusIndicator.innerHTML =
+          '<div class="spinner"></div><span>Submitting job...</span>';
+        updateProgress(0, "Initializing...");
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "⏳ Processing...";
+
+        try {
+          const resp = await fetch("/validate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+          const result = await resp.json();
+
+          if (result.job_id) {
+            pollStatus(result.job_id);
+          } else {
+            throw new Error(result.detail || "Failed to start validation");
+          }
+        } catch (error) {
+          statusIndicator.className = "status-indicator status-error";
+          statusIndicator.innerHTML = `<span>❌ Error: ${error.message}</span>`;
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = "🚀 Start Validation";
+        }
+      };
+
+      async function pollStatus(job_id) {
+        const statusIndicator = document.getElementById("status-indicator");
+        const submitBtn = document.getElementById("submit-btn");
+
+        let interval = setInterval(async () => {
+          try {
+            const resp = await fetch("/status/" + job_id);
+            const result = await resp.json();
+
+            updateProgress(
+              result.progress || 0,
+              result.message || "Processing...",
+            );
+
+            if (result.status === "completed") {
+              clearInterval(interval);
+              statusIndicator.className = "status-indicator status-completed";
+              statusIndicator.innerHTML = `<span>✅ Validation completed! ${result.message || ""}</span>`;
+              updateProgress(100, result.message || "Completed");
+
+              showResults(result.result, job_id);
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = "🚀 Start Validation";
+            } else if (result.status === "error") {
+              clearInterval(interval);
+              statusIndicator.className = "status-indicator status-error";
+              statusIndicator.innerHTML = `<span>❌ Error: ${result.result?.error || result.message}</span>`;
+              updateProgress(0, "Failed");
+
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = "🚀 Start Validation";
+            } else {
+              statusIndicator.className = "status-indicator status-running";
+              statusIndicator.innerHTML = `<div class="spinner"></div><span>Processing... ${result.progress || 0}%</span>`;
+            }
+          } catch (error) {
+            clearInterval(interval);
+            statusIndicator.className = "status-indicator status-error";
+            statusIndicator.innerHTML = `<span>❌ Error: ${error.message}</span>`;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = "🚀 Start Validation";
+          }
+        }, 500); // Optimized: 500ms polling for faster UI responsiveness
+      }
+
+      function showResults(result, job_id) {
+        document.getElementById("results-section").classList.add("visible");
+
+        const summary = result.summary || {};
+        const matchPct = (summary.match_percentage || 0).toFixed(2);
+
+        document.getElementById("summary-stats").innerHTML = `
+                <div class="stat-box stat-source">
+                    <div class="stat-value">${(summary.source_count || 0).toLocaleString()}</div>
+                    <div class="stat-label">Source Rows</div>
+                </div>
+                <div class="stat-box stat-target">
+                    <div class="stat-value">${(summary.target_count || 0).toLocaleString()}</div>
+                    <div class="stat-label">Target Rows</div>
+                </div>
+                <div class="stat-box stat-matching">
+                    <div class="stat-value">${(summary.matching_rows || 0).toLocaleString()}</div>
+                    <div class="stat-label">Matching Rows</div>
+                </div>
+                <div class="stat-box stat-missing-source">
+                    <div class="stat-value">${(summary.missing_in_source || 0).toLocaleString()}</div>
+                    <div class="stat-label">Missing in Source</div>
+                </div>
+                <div class="stat-box stat-missing-target">
+                    <div class="stat-value">${(summary.missing_in_target || 0).toLocaleString()}</div>
+                    <div class="stat-label">Missing in Target</div>
+                </div>
+                <div class="stat-box stat-percentage">
+                    <div class="stat-value">${matchPct}%</div>
+                    <div class="stat-label">Match Rate</div>
+                </div>
+            `;
+
+        let insightClass = "success";
+        let insightIcon = "✅";
+        let insightTitle = "Perfect Match";
+        let insightText = "All rows match between source and target files.";
+
+        if (matchPct < 100 && matchPct >= 90) {
+          insightClass = "warning";
+          insightIcon = "⚠️";
+          insightTitle = "Minor Differences";
+          insightText =
+            "Some rows have differences. Review the full report for details.";
+        } else if (matchPct < 90) {
+          insightClass = "error";
+          insightIcon = "❌";
+          insightTitle = "Significant Differences";
+          insightText =
+            "Many rows have differences. Immediate review recommended.";
+        }
+
+        document.getElementById("insight-cards").innerHTML = `
+                <div class="insight-card ${insightClass}">
+                    <h3>${insightIcon} ${insightTitle}</h3>
+                    <p>${insightText}</p>
+                </div>
+            `;
+
+        // Store job_id for report viewer
+        document
+          .getElementById("report-link")
+          .setAttribute("data-job-id", job_id);
+        document.getElementById("report-link").href = "#";
+        document.getElementById("report-link").onclick = function (e) {
+          e.preventDefault();
+          openReportViewer(job_id);
+        };
+        // Download Excel on-demand (generate only when user clicks)
+        document.getElementById("download-excel-link").href =
+          "/report/" + job_id + "/excel";
+        // Download HTML report on-demand
+        document.getElementById("download-html-link").href =
+          "/report/" + job_id;
+      }
+
+      // Report Viewer Functions
+      function openReportViewer(jobId) {
+        const viewer = document.getElementById("report-viewer");
+        const iframe = document.getElementById("report-iframe");
+        const downloadExcelBtn = document.getElementById(
+          "viewer-download-excel-btn",
+        );
+        const downloadHtmlBtn = document.getElementById(
+          "viewer-download-html-btn",
+        );
+
+        // Set iframe source to the view endpoint
+        iframe.src = "/report/" + jobId + "/view";
+        // Wire download buttons to on-demand endpoints
+        downloadExcelBtn.href = "/report/" + jobId + "/excel";
+        downloadHtmlBtn.href = "/report/" + jobId;
+
+        // Show viewer
+        viewer.classList.add("visible");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeReportViewer() {
+        const viewer = document.getElementById("report-viewer");
+        const iframe = document.getElementById("report-iframe");
+
+        // Hide viewer
+        viewer.classList.remove("visible");
+        document.body.style.overflow = "";
+
+        // Clear iframe
+        iframe.src = "about:blank";
+      }
+
+      // Handle Escape key to close viewer
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          const viewer = document.getElementById("report-viewer");
+          if (viewer.classList.contains("visible")) {
+            closeReportViewer();
+          }
+        }
+      });
+
+      // =============================================================
+      // Recent Jobs (server-backed)
+      // =============================================================
+
+      async function loadRecentReports() {
+        const container = document.getElementById("report-list");
+        try {
+          const resp = await fetch("/reports/recent");
+          const data = await resp.json();
+          const reports = data.reports || [];
+
+          if (reports.length === 0) {
+            container.innerHTML =
+              '<div class="empty-state">📭 No jobs yet. Run a validation to generate one.</div>';
+            return;
+          }
+
+          container.innerHTML = reports
+            .map(
+              (r) => `
+              <div class="report-item">
+                <div class="report-item-info">
+                  <div class="report-item-id">${r.job_id}</div>
+                  <div class="report-item-meta">
+                    <span>📅 ${r.modified}</span>
+                    <span>📦 ${r.size_human}</span>
+                    ${r.has_excel ? '<span title="Excel export available">📊 Excel</span>' : ""}
+                  </div>
+                </div>
+                <div class="report-item-actions">
+                  <span class="report-status completed">✅ completed</span>
+                  <button class="btn btn-view" onclick="openSavedReportViewer('${r.filename}')">
+                    👁️ View
+                  </button>
+                </div>
+              </div>
+            `,
+            )
+            .join("");
+        } catch (error) {
+          container.innerHTML =
+            '<div class="empty-state">⚠️ Failed to load recent jobs.</div>';
+          console.error("Failed to load recent jobs:", error);
+        }
+      }
+
+      function openSavedReportViewer(filename) {
+        const viewer = document.getElementById("report-viewer");
+        const iframe = document.getElementById("report-iframe");
+        const downloadExcelBtn = document.getElementById(
+          "viewer-download-excel-btn",
+        );
+        const downloadHtmlBtn = document.getElementById(
+          "viewer-download-html-btn",
+        );
+
+        // Use the saved-report endpoints
+        iframe.src = "/reports/" + filename + "/view";
+        downloadHtmlBtn.href = "/reports/" + filename + "/download";
+
+        // Derive job_id from filename (strip "_report.html" suffix)
+        const jobId = filename.replace(/_report\.html$/, "");
+
+        // Check if Excel export is available (parquet cache on disk)
+        downloadExcelBtn.style.display = "none";
+        fetch("/report/" + jobId + "/excel-available")
+          .then(function (resp) {
+            if (resp.ok) {
+              downloadExcelBtn.href = "/report/" + jobId + "/excel";
+              downloadExcelBtn.style.display = "";
+            }
+          })
+          .catch(function () {
+            // Cache not available — keep Excel button hidden
+          });
+
+        viewer.classList.add("visible");
+        document.body.style.overflow = "hidden";
+      }
+
+      // Override closeReportViewer to restore Excel button visibility
+      const _origCloseReportViewer = closeReportViewer;
+      closeReportViewer = function () {
+        _origCloseReportViewer();
+        // Restore Excel button for future current-session views
+        document.getElementById("viewer-download-excel-btn").style.display = "";
+      };
+
+      // Load recent jobs on page load
+      loadRecentReports();
+
+      // Refresh the recent jobs list after a job completes
+      const _origShowResults = showResults;
+      showResults = function (result, job_id) {
+        _origShowResults(result, job_id);
+        // Refresh the server-backed list so the new job appears
+        loadRecentReports();
+      };
+
+      // =============================================================
+      // Download Error Modal
+      // =============================================================
+
+      function showDownloadErrorModal() {
+        document
+          .getElementById("download-error-modal")
+          .classList.add("visible");
+      }
+
+      function closeDownloadErrorModal() {
+        document
+          .getElementById("download-error-modal")
+          .classList.remove("visible");
+      }
+
+      // Close modal on Escape key or clicking outside
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          const modal = document.getElementById("download-error-modal");
+          if (modal.classList.contains("visible")) {
+            closeDownloadErrorModal();
+          }
+        }
+      });
+
+      document
+        .getElementById("download-error-modal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeDownloadErrorModal();
+          }
+        });
+
+      // Intercept download link clicks — fetch the file, show modal on error
+      function interceptDownloadLink(linkElement, checkType) {
+        linkElement.addEventListener("click", async function (e) {
+          const href = this.getAttribute("href");
+          if (!href || href === "#") return;
+
+          e.preventDefault();
+
+          try {
+            if (checkType === "excel") {
+              // For Excel: pre-check via lightweight availability endpoint
+              // to avoid triggering expensive on-the-fly generation when cache is gone
+              const jobIdMatch = href.match(/\/report\/([^/]+)\/excel/);
+              if (jobIdMatch) {
+                const checkResp = await fetch(
+                  "/report/" + jobIdMatch[1] + "/excel-available",
+                );
+                if (!checkResp.ok) {
+                  showDownloadErrorModal();
+                  return;
+                }
+              }
+            }
+
+            // Fetch the actual file — this lets us catch errors as a response
+            // instead of navigating the browser to a raw error page
+            const resp = await fetch(href);
+            if (!resp.ok) {
+              showDownloadErrorModal();
+              return;
+            }
+
+            // Stream successful response into a blob and trigger download
+            const blob = await resp.blob();
+            const disposition = resp.headers.get("content-disposition") || "";
+            let filename = "";
+            const filenameMatch = disposition.match(
+              /filename\*?=(?:UTF-8''|")?([^";]+)/i,
+            );
+            if (filenameMatch) {
+              filename = decodeURIComponent(filenameMatch[1].replace(/"/g, ""));
+            }
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            if (filename) a.download = filename;
+            else a.download = "";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          } catch (err) {
+            showDownloadErrorModal();
+          }
+        });
+      }
+
+      // Attach interceptors to all download buttons
+      interceptDownloadLink(
+        document.getElementById("download-excel-link"),
+        "excel",
+      );
+      interceptDownloadLink(
+        document.getElementById("download-html-link"),
+        "html",
+      );
+      interceptDownloadLink(
+        document.getElementById("viewer-download-excel-btn"),
+        "excel",
+      );
+      interceptDownloadLink(
+        document.getElementById("viewer-download-html-btn"),
+        "html",
+      );
+    </script>
+
+    <footer class="site-footer">
+      © 2026 Mayuresh Kedari. All rights reserved.
+    </footer>
+  </body>
+</html>
