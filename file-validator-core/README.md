@@ -1,8 +1,7 @@
 # File Validator Core
 
 **Version:** 1.0  
-**Last Updated:** February 18, 2026  
-**Status:** Production Ready
+**Last Updated:** February 01, 2026
 
 Core validation library for file comparison and auditing.
 
@@ -29,7 +28,8 @@ Core validation library for file comparison and auditing.
 
 ## Overview
 
-`file-validator-core` is a high-performance Python library for validating and comparing data files. Built on DuckDB and Polars, it provides enterprise-grade file comparison with rich reporting capabilities.
+`file-validator-core` is a high-performance Python library for validating and comparing data files. Built on DuckDB and
+Polars, it provides enterprise-grade file comparison with rich reporting capabilities.
 
 ### Key Features
 
@@ -67,6 +67,7 @@ uv pip install -e ./file-validator-core
 ### Dependencies
 
 Core dependencies:
+
 - `duckdb>=1.4.4` - High-performance SQL engine
 - `polars>=1.38.1` - Fast DataFrames
 - `pandas>=3.0.0` - Data manipulation (fallback)
@@ -189,23 +190,23 @@ with FileAuditor(...) as auditor:
 **Statistics attributes (populated after `run_comparison()`):**
 
 ```python
-auditor.source_row_count        # int — rows in source
-auditor.target_row_count        # int — rows in target
-auditor.matching_rows_count     # int — rows that match exactly
-auditor.mismatched_rows_count   # int — rows with value differences
-auditor.missing_in_source_count # int — keys in target but not source
-auditor.missing_in_target_count # int — keys in source but not target
-auditor.match_percentage        # float — overall match %
-auditor.row_count_diff          # int — abs(source_rows - target_rows)
+auditor.source_row_count  # int — rows in source
+auditor.target_row_count  # int — rows in target
+auditor.matching_rows_count  # int — rows that match exactly
+auditor.mismatched_rows_count  # int — rows with value differences
+auditor.missing_in_source_count  # int — keys in target but not source
+auditor.missing_in_target_count  # int — keys in source but not target
+auditor.match_percentage  # float — overall match %
+auditor.row_count_diff  # int — abs(source_rows - target_rows)
 ```
 
 **Comparison artifacts (populated after `load_data()`):**
 
 ```python
-auditor.header_comparison   # list[dict] | None
+auditor.header_comparison  # list[dict] | None
 auditor.trailer_comparison  # list[dict] | None
-auditor.source_rejects      # pl.DataFrame | None — rows DuckDB rejected
-auditor.target_rejects      # pl.DataFrame | None
+auditor.source_rejects  # pl.DataFrame | None — rows DuckDB rejected
+auditor.target_rejects  # pl.DataFrame | None
 ```
 
 ### 2. FileConfig
@@ -230,6 +231,7 @@ config = FileConfig(
 ```
 
 **Properties:**
+
 - `is_gcs` — `True` when path starts with `gs://`
 - `is_compressed` — `True` when extension is `.gz`, `.Z`, `.bz2`, or `.zip`
 - `filename` — bare filename extracted from path
@@ -242,16 +244,16 @@ Data normalization rules applied before comparison.
 from file_validator.config import NormalizationConfig
 
 norm_config = NormalizationConfig(
-    float_epsilon=None,          # float | None — tolerance for float comparisons
-    normalize_dates=False,       # bool — standardize date formats before comparing
-    trim_strings=False,          # bool — trim whitespace from all string columns
-    treat_null_as_empty=True,    # bool — treat NULL as "" (default: True)
-    ltrim_columns=[],            # list[str] — left-trim specific columns
-    rtrim_columns=[],            # list[str] — right-trim specific columns
-    trim_columns=[],             # list[str] — both-sides trim specific columns
-    upper_columns=[],            # list[str] — UPPER() specific columns
-    lower_columns=[],            # list[str] — LOWER() specific columns
-    strip_accents_columns=[],    # list[str] — UNACCENT() specific columns
+    float_epsilon=None,  # float | None — tolerance for float comparisons
+    normalize_dates=False,  # bool — standardize date formats before comparing
+    trim_strings=False,  # bool — trim whitespace from all string columns
+    treat_null_as_empty=True,  # bool — treat NULL as "" (default: True)
+    ltrim_columns=[],  # list[str] — left-trim specific columns
+    rtrim_columns=[],  # list[str] — right-trim specific columns
+    trim_columns=[],  # list[str] — both-sides trim specific columns
+    upper_columns=[],  # list[str] — UPPER() specific columns
+    lower_columns=[],  # list[str] — LOWER() specific columns
+    strip_accents_columns=[],  # list[str] — UNACCENT() specific columns
 )
 ```
 
@@ -432,14 +434,14 @@ The comparison engine uses DuckDB for efficient SQL-based validation:
 After `run_comparison()` the following attributes are populated on the auditor:
 
 ```python
-auditor.source_row_count         # 10000
-auditor.target_row_count         # 10000
-auditor.matching_rows_count      # 9500
-auditor.mismatched_rows_count    # 400
+auditor.source_row_count  # 10000
+auditor.target_row_count  # 10000
+auditor.matching_rows_count  # 9500
+auditor.mismatched_rows_count  # 400
 auditor.missing_in_source_count  # 50
 auditor.missing_in_target_count  # 50
-auditor.match_percentage         # 95.0
-auditor.row_count_diff           # 0
+auditor.match_percentage  # 95.0
+auditor.row_count_diff  # 0
 ```
 
 ---
@@ -451,25 +453,30 @@ auditor.row_count_diff           # 0
 Generated reports include:
 
 #### 1. **File Naming Convention Section**
+
 - Side-by-side file cards (source / target)
 - Full filename and path display
 - Pattern analysis table and component comparison
 
 #### 2. **Primary Key Visual Indicators**
+
 - Dedicated Primary Keys section with stat boxes
 - 🔑 emoji icons on PK column headers
 - Enhanced legend with PK color explanation
 
 #### 3. **View Modes**
+
 - **Side-by-side**: Source and target in dual panes
 - **Stacked**: Source over target in single pane
 - **Inline**: Source/target columns alternating
 
 #### 4. **Dark Mode Support**
+
 - Full theme with WCAG AAA compliant contrast ratios
 - Persistent preference (localStorage)
 
 #### 5. **Interactive Features**
+
 - **Search & Filter**: Global search, filter by status
 - **Navigation**: Keyboard shortcuts, jump to differences
 - **Character Diff**: Modal with char-by-char comparison
@@ -478,6 +485,7 @@ Generated reports include:
 - **Timezone Switching**: LOCAL, UTC, IST, ET
 
 #### 6. **Data Quality Insights**
+
 - Match percentage gauge
 - Row distribution charts
 - Column-level statistics
@@ -524,17 +532,17 @@ generate_html_report(
 
 Exported Excel files contain:
 
-| Sheet | Content |
-|-------|---------|
-| **Summary** | Statistics and metadata |
-| **Source-Target Comparison** | Side-by-side data with status |
-| **Source Data** | Source values only |
-| **Target Data** | Target values only |
-| **Mismatch Details** | Filtered mismatched rows |
-| **Header Comparison** | Header line differences |
-| **Trailer Comparison** | Trailer line differences |
-| **Sample Matching Data** | Sample rows for 100% match scenarios |
-| **Rejected Records** | Validation failures from source and target |
+| Sheet                        | Content                                    |
+|------------------------------|--------------------------------------------|
+| **Summary**                  | Statistics and metadata                    |
+| **Source-Target Comparison** | Side-by-side data with status              |
+| **Source Data**              | Source values only                         |
+| **Target Data**              | Target values only                         |
+| **Mismatch Details**         | Filtered mismatched rows                   |
+| **Header Comparison**        | Header line differences                    |
+| **Trailer Comparison**       | Trailer line differences                   |
+| **Sample Matching Data**     | Sample rows for 100% match scenarios       |
+| **Rejected Records**         | Validation failures from source and target |
 
 ### Usage
 
@@ -629,10 +637,10 @@ print(COMPRESSION_EXTENSIONS)
 
 ```python
 norm_config = NormalizationConfig(
-    float_epsilon=0.001,           # Treat values within 0.001 as equal
-    trim_strings=True,             # Trim whitespace from all string columns
-    treat_null_as_empty=True,      # NULL == "" (default)
-    normalize_dates=True,          # Standardize date formats via TIMESTAMP cast
+    float_epsilon=0.001,  # Treat values within 0.001 as equal
+    trim_strings=True,  # Trim whitespace from all string columns
+    treat_null_as_empty=True,  # NULL == "" (default)
+    normalize_dates=True,  # Standardize date formats via TIMESTAMP cast
     upper_columns=["country_code", "status"],
     lower_columns=["email"],
     trim_columns=["address", "description"],
@@ -698,11 +706,11 @@ impersonated = impersonate_self(credentials, target_principal="sa@project.iam.gs
 Three DuckDB settings can be overridden via environment variables without changing
 code. The env var always takes precedence over the constructor parameter.
 
-| Environment Variable | Default | Description |
-|---|---|---|
-| `DUCKDB_MEMORY_LIMIT` | `6GB` (constructor param) | Maximum RAM before spilling to disk |
-| `DUCKDB_PRESERVE_INSERTION_ORDER` | `false` | Re-enable row-order tracking (`true`/`false`) |
-| `DUCKDB_ALLOCATOR_FLUSH_THRESHOLD` | `256MB` | How aggressively freed pages are returned to OS |
+| Environment Variable               | Default                   | Description                                     |
+|------------------------------------|---------------------------|-------------------------------------------------|
+| `DUCKDB_MEMORY_LIMIT`              | `6GB` (constructor param) | Maximum RAM before spilling to disk             |
+| `DUCKDB_PRESERVE_INSERTION_ORDER`  | `false`                   | Re-enable row-order tracking (`true`/`false`)   |
+| `DUCKDB_ALLOCATOR_FLUSH_THRESHOLD` | `256MB`                   | How aggressively freed pages are returned to OS |
 
 ### Setting via `.env` (configs/.env)
 
@@ -724,7 +732,7 @@ FileAuditor(
     source_config=source,
     target_config=target,
     primary_keys=["id"],
-    memory_limit="16GB",   # used only if DUCKDB_MEMORY_LIMIT is not set
+    memory_limit="16GB",  # used only if DUCKDB_MEMORY_LIMIT is not set
     threads=8,
 )
 ```
@@ -735,29 +743,29 @@ FileAuditor(
 
 ### Main Classes
 
-| Class | Module | Purpose |
-|-------|--------|---------|
-| `FileAuditor` | `auditor` | Main comparison engine |
-| `FileConfig` | `config` | File configuration |
-| `NormalizationConfig` | `config` | Normalization rules |
-| `FileHandler` | `file_handlers.interface` | Abstract base for file handlers |
-| `GCSFileHandler` | `file_handlers.gcs_handler` | GCS file operations |
-| `LocalFileHandler` | `file_handlers.local_handler` | Local file operations |
-| `PolarsFWFConverter` | `converters` | FWF → Parquet conversion |
+| Class                 | Module                        | Purpose                         |
+|-----------------------|-------------------------------|---------------------------------|
+| `FileAuditor`         | `auditor`                     | Main comparison engine          |
+| `FileConfig`          | `config`                      | File configuration              |
+| `NormalizationConfig` | `config`                      | Normalization rules             |
+| `FileHandler`         | `file_handlers.interface`     | Abstract base for file handlers |
+| `GCSFileHandler`      | `file_handlers.gcs_handler`   | GCS file operations             |
+| `LocalFileHandler`    | `file_handlers.local_handler` | Local file operations           |
+| `PolarsFWFConverter`  | `converters`                  | FWF → Parquet conversion        |
 
 ### Main Functions
 
-| Function | Module | Purpose |
-|----------|--------|---------|
-| `generate_html_report` | `report_generator` | Create interactive HTML report |
-| `build_and_save_excel_file` | `excel_exporter` | Export results to Excel |
-| `export_to_excel` | `excel_exporter` | Lower-level Excel export |
-| `decompress_file` | `file_handlers.compression` | Decompress a file |
-| `get_compression_type` | `file_handlers.compression` | Detect compression from extension |
-| `parse_fwf_column_specification` | `utils` | Parse column widths → `(start, end)` tuples |
-| `setup_logging` | `utils` | Configure rotating file + console logging |
-| `format_bytes` | `utils` | Convert byte count to human-readable string |
-| `calculate_time` | `utils` | Format elapsed seconds as human-readable duration |
+| Function                         | Module                      | Purpose                                           |
+|----------------------------------|-----------------------------|---------------------------------------------------|
+| `generate_html_report`           | `report_generator`          | Create interactive HTML report                    |
+| `build_and_save_excel_file`      | `excel_exporter`            | Export results to Excel                           |
+| `export_to_excel`                | `excel_exporter`            | Lower-level Excel export                          |
+| `decompress_file`                | `file_handlers.compression` | Decompress a file                                 |
+| `get_compression_type`           | `file_handlers.compression` | Detect compression from extension                 |
+| `parse_fwf_column_specification` | `utils`                     | Parse column widths → `(start, end)` tuples       |
+| `setup_logging`                  | `utils`                     | Configure rotating file + console logging         |
+| `format_bytes`                   | `utils`                     | Convert byte count to human-readable string       |
+| `calculate_time`                 | `utils`                     | Format elapsed seconds as human-readable duration |
 
 ### Utility Functions
 
@@ -877,11 +885,11 @@ setup_logging(log_level="DEBUG", log_file="logs/debug.log")
 Typical performance on modern hardware:
 
 | File Size | Rows | Comparison Time |
-|-----------|------|----------------|
-| 10 MB | 100K | ~2 seconds |
-| 100 MB | 1M | ~15 seconds |
-| 1 GB | 10M | ~2 minutes |
-| 10 GB | 100M | ~20 minutes |
+|-----------|------|-----------------|
+| 10 MB     | 100K | ~2 seconds      |
+| 100 MB    | 1M   | ~15 seconds     |
+| 1 GB      | 10M  | ~2 minutes      |
+| 10 GB     | 100M | ~20 minutes     |
 
 *Times vary based on column count, normalization complexity, and hardware.*
 
