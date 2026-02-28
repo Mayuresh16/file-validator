@@ -10,7 +10,8 @@ A file validation and comparison framework with interactive reporting and a web 
 
 ## Overview
 
-File Validator is a [UV workspace](https://docs.astral.sh/uv/concepts/workspaces/) for validating, comparing, and auditing data files. It provides:
+File Validator is a [UV workspace](https://docs.astral.sh/uv/concepts/workspaces/) for validating, comparing, and
+auditing data files. It provides:
 
 - **Comparison engine** powered by DuckDB (file-backed, spill-to-disk) and Polars
 - **Interactive HTML reports** with dark mode, search, and character-level diff
@@ -19,7 +20,8 @@ File Validator is a [UV workspace](https://docs.astral.sh/uv/concepts/workspaces
 - **Cloud storage** — Google Cloud Storage (`gs://` URIs) via DuckDB httpfs
 - **Compression** — automatic handling of `.gz`, `.Z`, `.bz2`, `.zip`
 - **Excel export** — multi-sheet workbooks (openpyxl)
-- **DuckDB tuning** — `memory_limit`, `preserve_insertion_order`, and `allocator_flush_threshold` configurable via environment variables
+- **DuckDB tuning** — `memory_limit`, `preserve_insertion_order`, and `allocator_flush_threshold` configurable via
+  environment variables
 
 ---
 
@@ -109,26 +111,26 @@ Open http://127.0.0.1:8000 (or `:9000` in dev mode).
 
 1. Start the server
 2. Configure your validation job:
-   - Source and target file paths (local or `gs://` GCS URIs)
-   - Primary keys for row matching
-   - File type and delimiter
-   - Header rows, trailer patterns, encoding, compression
-   - Normalization options (trim, case, date formatting, null handling)
+    - Source and target file paths (local or `gs://` GCS URIs)
+    - Primary keys for row matching
+    - File type and delimiter
+    - Header rows, trailer patterns, encoding, compression
+    - Normalization options (trim, case, date formatting, null handling)
 3. Submit and monitor progress via live updates
 4. Download HTML report or Excel workbook
 
 ### API Endpoints
 
-| Method | Path                     | Description                          |
-| ------ | ------------------------ | ------------------------------------ |
-| `GET`  | `/`                      | Main UI page                         |
-| `POST` | `/validate`              | Submit a validation job              |
-| `POST` | `/upload`                | Upload files for validation          |
-| `GET`  | `/status/{job_id}`       | Poll job progress                    |
-| `GET`  | `/report/{job_id}`       | Download HTML report                 |
-| `GET`  | `/report/{job_id}/view`  | View HTML report inline in browser   |
-| `GET`  | `/report/{job_id}/excel` | Generate and download Excel report   |
-| `GET`  | `/cache/stats`           | On-disk result cache statistics      |
+| Method | Path                     | Description                        |
+|--------|--------------------------|------------------------------------|
+| `GET`  | `/`                      | Main UI page                       |
+| `POST` | `/validate`              | Submit a validation job            |
+| `POST` | `/upload`                | Upload files for validation        |
+| `GET`  | `/status/{job_id}`       | Poll job progress                  |
+| `GET`  | `/report/{job_id}`       | Download HTML report               |
+| `GET`  | `/report/{job_id}/view`  | View HTML report inline in browser |
+| `GET`  | `/report/{job_id}/excel` | Generate and download Excel report |
+| `GET`  | `/cache/stats`           | On-disk result cache statistics    |
 
 ### Programmatic Usage
 
@@ -161,10 +163,10 @@ norm = NormalizationConfig(
 start = time.monotonic()
 
 with FileAuditor(
-    source_config=source,
-    target_config=target,
-    primary_keys=["id", "date"],
-    norm_config=norm,
+        source_config=source,
+        target_config=target,
+        primary_keys=["id", "date"],
+        norm_config=norm,
 ) as auditor:
     auditor.load_data()
     df = auditor.run_comparison()
@@ -210,12 +212,12 @@ print(f"Elapsed: {calculate_time(start, time.monotonic())}")
 
 ### File Formats
 
-| Format            | Details                                                                     |
-| ----------------- | --------------------------------------------------------------------------- |
-| Delimited         | CSV, PSV, TSV, any custom delimiter                                         |
+| Format            | Details                                                                                        |
+|-------------------|------------------------------------------------------------------------------------------------|
+| Delimited         | CSV, PSV, TSV, any custom delimiter                                                            |
 | Fixed-Width (FWF) | Column widths as comma-separated lengths (e.g. `10,5,8`); auto-converted to Parquet via Polars |
-| Compression       | `.gz`, `.Z`, `.bz2`, `.zip` — auto-detected from extension                  |
-| Cloud Storage     | GCS `gs://` URIs — read directly via DuckDB httpfs or downloaded for FWF    |
+| Compression       | `.gz`, `.Z`, `.bz2`, `.zip` — auto-detected from extension                                     |
+| Cloud Storage     | GCS `gs://` URIs — read directly via DuckDB httpfs or downloaded for FWF                       |
 
 ### Comparison Engine
 
@@ -224,7 +226,8 @@ print(f"Elapsed: {calculate_time(start, time.monotonic())}")
 - **Column-level diff** — per-column match/mismatch status with source and target values
 - **Character-by-character diff** — position-level comparison for mismatched header/trailer lines
 - **Header/Trailer validation** — separate line-by-line comparison outside the data region
-- **Data normalization** — trim (left/right/both), upper/lower case, accent stripping, date normalization, float epsilon, null-as-empty
+- **Data normalization** — trim (left/right/both), upper/lower case, accent stripping, date normalization, float
+  epsilon, null-as-empty
 - **Memory efficiency** — file-backed DuckDB database, spill-to-disk, configurable via env vars
 
 ### Interactive HTML Reports
@@ -321,7 +324,7 @@ FileAuditor(
     source_config=source,
     target_config=target,
     primary_keys=["id"],
-    memory_limit="16GB",   # used only when DUCKDB_MEMORY_LIMIT is absent
+    memory_limit="16GB",  # used only when DUCKDB_MEMORY_LIMIT is absent
     threads=8,
 )
 ```
@@ -434,6 +437,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Support
 
-1. Check [DEVELOPMENT.md](summary_files/DEVELOPMENT.md) for troubleshooting
+1. Check [DEVELOPMENT.md](./DEVELOPMENT.md) for troubleshooting
 2. Review component READMEs for specific features
 3. Contact the author

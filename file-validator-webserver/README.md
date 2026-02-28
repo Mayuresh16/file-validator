@@ -4,7 +4,8 @@
 **Last Updated:** February 18, 2026
 **Status:** Production Ready
 
-A user-friendly FastAPI web application for file validation, providing a modern UI to configure and run validation jobs with real-time progress updates.
+A user-friendly FastAPI web application for file validation, providing a modern UI to configure and run validation jobs
+with real-time progress updates.
 
 ---
 
@@ -27,7 +28,8 @@ A user-friendly FastAPI web application for file validation, providing a modern 
 
 ## Overview
 
-File Validator WebServer provides a professional web interface for the file-validator-core library. Built with FastAPI, it offers:
+File Validator WebServer provides a professional web interface for the file-validator-core library. Built with FastAPI,
+it offers:
 
 - **Modern, responsive UI** matching the file_validator report style
 - **Async job processing** for non-blocking validation
@@ -128,6 +130,7 @@ Configure validation jobs through the web form:
 ### Example Configurations
 
 **Basic CSV Comparison:**
+
 ```
 Job Name:     daily_check
 Source Path:  data/source.csv
@@ -138,6 +141,7 @@ Header Rows:  1
 ```
 
 **GCS with Compression:**
+
 ```
 Source Path: gs://my-bucket/data/source.csv.gz
 Target Path: gs://my-bucket/data/target.csv.gz
@@ -146,6 +150,7 @@ Compression: auto
 ```
 
 **Pipe-Separated Values:**
+
 ```
 Source Path: data/source.psv
 Target Path: data/target.psv
@@ -155,6 +160,7 @@ File Type:   psv
 ```
 
 **Fixed-Width (FWF):**
+
 ```
 Source Path:          data/source.txt
 Target Path:          data/target.txt
@@ -188,12 +194,12 @@ file-validator-webserver/
 
 ### Key Files
 
-| File | Purpose |
-|------|---------|
-| `main.py` | FastAPI app, all API routes, background job runner, cache management |
+| File          | Purpose                                                                                                  |
+|---------------|----------------------------------------------------------------------------------------------------------|
+| `main.py`     | FastAPI app, all API routes, background job runner, cache management                                     |
 | `fs_utils.py` | Async wrappers: `async_path_exists`, `async_list_files`, `async_resolve`, `async_unlink`, `async_rmtree` |
-| `index.html` | Web UI — form, job status display, job history |
-| `style.css` | Custom CSS for UI styling |
+| `index.html`  | Web UI — form, job status display, job history                                                           |
+| `style.css`   | Custom CSS for UI styling                                                                                |
 
 ---
 
@@ -227,16 +233,24 @@ Starts a validation job in the background. Returns immediately with the `job_id`
   "source_filename": "source.csv",
   "target_path": "data/target.csv",
   "target_filename": "target.csv",
-  "primary_keys": ["id", "date"],
+  "primary_keys": [
+    "id",
+    "date"
+  ],
   "delimiter": ",",
   "header_rows": 1,
   "file_type": "csv",
-  "trailer_patterns": ["TRAILER", "TOTAL"],
+  "trailer_patterns": [
+    "TRAILER",
+    "TOTAL"
+  ],
   "encoding": "utf-8",
   "compression": "auto",
   "column_specification": null,
   "normalization": {
-    "normalization": ["trim"],
+    "normalization": [
+      "trim"
+    ],
     "normalize_dates": false,
     "treat_null_as_empty": true,
     "float_epsilon": null,
@@ -250,6 +264,7 @@ Starts a validation job in the background. Returns immediately with the `job_id`
 > **`primary_keys`** must be a JSON array of strings, not a comma-separated string.
 
 **Response:**
+
 ```json
 {
   "job_id": "daily_reconciliation_source_20260228_143022",
@@ -268,6 +283,7 @@ Upload a local file to the server's `uploads/` directory.
 **Request:** multipart form with a `file` field.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -283,6 +299,7 @@ Use the returned `path` value as `source_path` or `target_path` in `/validate`.
 ### GET /status/{job_id}
 
 **Response (running):**
+
 ```json
 {
   "job_id": "daily_reconciliation_source_20260228_143022",
@@ -294,6 +311,7 @@ Use the returned `path` value as `source_path` or `target_path` in `/validate`.
 ```
 
 **Response (completed):**
+
 ```json
 {
   "job_id": "daily_reconciliation_source_20260228_143022",
@@ -320,20 +338,20 @@ Use the returned `path` value as `source_path` or `target_path` in `/validate`.
 
 **Progress milestones:**
 
-| % | Phase |
-|---|-------|
-| 5 | Initializing configuration |
-| 10 | Configuration initialized |
-| 15 | Creating file auditor |
-| 20 | Loading source file |
-| 40 | Data loaded |
-| 50 | Running comparison |
-| 70 | Comparison completed |
-| 75 | Generating sample data (100% match only) |
-| 80 | Generating HTML report |
-| 90 | Report generated |
-| 95 | Cleaning up resources |
-| 100 | Complete |
+| %   | Phase                                    |
+|-----|------------------------------------------|
+| 5   | Initializing configuration               |
+| 10  | Configuration initialized                |
+| 15  | Creating file auditor                    |
+| 20  | Loading source file                      |
+| 40  | Data loaded                              |
+| 50  | Running comparison                       |
+| 70  | Comparison completed                     |
+| 75  | Generating sample data (100% match only) |
+| 80  | Generating HTML report                   |
+| 90  | Report generated                         |
+| 95  | Cleaning up resources                    |
+| 100 | Complete                                 |
 
 ---
 
@@ -365,6 +383,7 @@ from disk once the download completes (via a background cleanup task).
 Returns statistics about the on-disk result cache directory (`reports/_cache/`).
 
 **Response:**
+
 ```json
 {
   "files": 3,
@@ -467,12 +486,12 @@ Excel download triggers cache cleanup
 
 ### Storage Locations
 
-| Path | Contents | Lifecycle |
-|------|----------|-----------|
-| `reports/` | HTML reports (`{job_id}_report.html`) | Retained until manual cleanup |
-| `reports/_cache/` | Parquet artifacts for Excel export | 1-hour TTL; swept every 10 min; purged on shutdown |
-| `uploads/` | Uploaded source/target files | Deleted on server shutdown |
-| `logs/webserver/` | Timestamped rotating log files | Manual cleanup |
+| Path              | Contents                              | Lifecycle                                          |
+|-------------------|---------------------------------------|----------------------------------------------------|
+| `reports/`        | HTML reports (`{job_id}_report.html`) | Retained until manual cleanup                      |
+| `reports/_cache/` | Parquet artifacts for Excel export    | 1-hour TTL; swept every 10 min; purged on shutdown |
+| `uploads/`        | Uploaded source/target files          | Deleted on server shutdown                         |
+| `logs/webserver/` | Timestamped rotating log files        | Manual cleanup                                     |
 
 ### Background Processing
 
@@ -499,10 +518,10 @@ from file_validator.excel_exporter import build_and_save_excel_file
 
 ```python
 with FileAuditor(
-    source_config=source_conf,
-    target_config=target_conf,
-    primary_keys=config.primary_keys,
-    norm_config=config.normalization,
+        source_config=source_conf,
+        target_config=target_conf,
+        primary_keys=config.primary_keys,
+        norm_config=config.normalization,
 ) as auditor:
     auditor.load_data()
     results = auditor.run_comparison()
@@ -628,6 +647,7 @@ for the full list of tunable env vars.
 #### Excel Download Returns 404
 
 The Excel endpoint requires:
+
 1. The job status to be `completed`
 2. The Parquet cache files to still exist (TTL = **1 hour**)
 
@@ -763,4 +783,4 @@ This project is licensed under the [MIT License](LICENSE).
 - [File Validator Core](../file-validator-core/README.md) — Core library documentation
 - [Report Template Builder](../report-template-builder/templates/README.md) — Template structure
 - [Main README](../README.md) — Project overview
-- [DEVELOPMENT.md](../../summary_files/DEVELOPMENT.md) — Development guide
+- [DEVELOPMENT.md](../../DEVELOPMENT.md) — Development guide
