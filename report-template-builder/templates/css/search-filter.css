@@ -1,0 +1,237 @@
+/* ============================================
+   SEARCH & FILTER STYLES
+   ============================================ */
+
+.search-filter-bar {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.search-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-input-wrapper {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 45px 12px 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7f8c8d;
+    font-size: 16px;
+}
+
+.clear-search {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #7f8c8d;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+    display: none;
+}
+
+.clear-search:hover {
+    color: #e74c3c;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-btn:hover {
+    background: #f8f9fa;
+    border-color: #3498db;
+}
+
+.filter-btn.active {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.filter-badge {
+    background: rgba(255,255,255,0.3);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+}
+
+.filter-btn.active .filter-badge {
+    background: rgba(255,255,255,0.3);
+}
+
+.search-stats {
+    padding: 10px 0;
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+/* Difference Count Badge */
+.diff-count {
+    display: inline-block;
+    background: #e74c3c;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 8px;
+}
+
+/* Export Info */
+.export-info {
+    padding: 10px 20px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 2px solid #4caf50;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ============================================
+   COPY TO CLIPBOARD BUTTON
+   ============================================ */
+
+.copy-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(52, 152, 219, 0.1);
+    border: 1px solid #3498db;
+    color: #3498db;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.cell-source:hover .copy-btn,
+.cell-target:hover .copy-btn,
+.cell-match:hover .copy-btn {
+    opacity: 1;
+}
+
+.copy-btn:hover {
+    background: #3498db;
+    color: white;
+}
+
+.copy-btn.copied {
+    background: #27ae60;
+    border-color: #27ae60;
+    color: white;
+}
+
+/* ============================================
+   ROW NUMBERS
+   ============================================ */
+
+.row-number {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #7f8c8d;
+    text-align: center;
+    width: 60px;
+    font-size: 12px;
+    border-right: 2px solid #dee2e6;
+}
+
+/* ============================================
+   HIGHLIGHT CURRENT ROW
+   ============================================ */
+
+tbody tr.highlighted {
+    background-color: #fff9c4 !important;
+    box-shadow: 0 0 0 3px #ffc107 inset;
+    transition: all 0.3s ease;
+    animation: pulse-highlight 1s ease-in-out;
+}
+
+@keyframes pulse-highlight {
+    0%, 100% {
+        box-shadow: 0 0 0 3px #ffc107 inset;
+    }
+    50% {
+        box-shadow: 0 0 0 5px #ffc107 inset, 0 0 15px rgba(255, 193, 7, 0.5);
+    }
+}
+
+/* ============================================
+   TRUNCATED TEXT TOOLTIP
+   ============================================ */
+
+.truncate {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: help;
+}
+
+.tooltip {
+    position: absolute;
+    background: #2c3e50;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    z-index: 10000;
+    max-width: 400px;
+    word-wrap: break-word;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    pointer-events: none;
+}
+

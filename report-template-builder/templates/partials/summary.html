@@ -1,0 +1,55 @@
+{# Summary Section #}
+<div class="summary">
+    <h3>📈 Summary</h3>
+    <div class="summary-stats">
+        <div class="stat-box">
+            <div class="stat-value">{{ data|length }}</div>
+            <div class="stat-label">Total Differences</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-value">{{ source_count }}</div>
+            <div class="stat-label">Source Rows</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-value">{{ target_count }}</div>
+            <div class="stat-label">Target Rows</div>
+        </div>
+        <div class="stat-box stat-matching">
+            <div class="stat-value">{{ matching_rows }}</div>
+            <div class="stat-label">Matching Rows</div>
+            <div class="stat-percentage">{{ "%.2f"|format(match_percentage) }}% Match Rate</div>
+        </div>
+        <div class="stat-box stat-missing-source">
+            <div class="stat-value">{{ missing_in_source }}</div>
+            <div class="stat-label">Missing in Source</div>
+        </div>
+        <div class="stat-box stat-missing-target">
+            <div class="stat-value">{{ missing_in_target }}</div>
+            <div class="stat-label">Extra in Source</div>
+        </div>
+    </div>
+</div>
+
+{# Primary Keys Section #}
+<div class="summary" style="border-left: 4px solid #28a745;">
+    <h3>🔑 Primary Key Columns</h3>
+    <p style="color: #7f8c8d; font-size: 14px; margin: 10px 0 15px 0;">
+        These columns are used to uniquely identify and match rows between source and target files.
+        Primary key columns are highlighted with a <strong style="color: #28a745;">light green background (🔑)</strong> in the data tables below.
+    </p>
+    <div class="summary-stats">
+        {% for pk in pks %}
+        <div class="stat-box stat-matching" style="border-left-color: #28a745;">
+            <div class="stat-value" style="color: #28a745; font-size: 18px;">🔑 {{ pk }}</div>
+            <div class="stat-label">Primary Key Column</div>
+        </div>
+        {% endfor %}
+        {% if not pks or pks|length == 0 %}
+        <div class="stat-box" style="border-left-color: #f39c12;">
+            <div class="stat-value" style="color: #f39c12; font-size: 16px;">⚠️ No Primary Keys</div>
+            <div class="stat-label">Row matching may be limited</div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+

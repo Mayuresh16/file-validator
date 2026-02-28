@@ -1,0 +1,27 @@
+{# View Toggle Controls #}
+<div class="view-controls">
+    <div class="toggle-container">
+        <span class="toggle-label">Comparison View:</span>
+        <div class="toggle-buttons">
+            <button class="toggle-btn active" id="sideViewBtn" onclick="switchView('side')">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                    <path d="M3 3h8v18H3V3zm10 0h8v18h-8V3z"/>
+                </svg>
+                Side-by-Side
+            </button>
+            <button class="toggle-btn" id="stackedViewBtn" onclick="switchView('stacked')">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                    <path d="M3 3h18v8H3V3zm0 10h18v8H3v-8z"/>
+                </svg>
+                Stacked
+            </button>
+            <button class="toggle-btn" id="inlineViewBtn" onclick="switchView('inline')">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                    <path d="M3 3h18v8H3V3zm0 10h18v8H3v-8z"/>
+                </svg>
+                Inline
+            </button>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,111 @@
+{# Rejected Rows Section #}
+{% if (source_rejects and source_rejects|length > 0) or (target_rejects and target_rejects|length > 0) %}
+<div class="rejected-rows-section" style="margin: 30px 0;">
+    <h3 style="color: #2c3e50; border-bottom: 2px solid #e74c3c; padding-bottom: 10px;">⚠️ Rejected Rows (Data Quality
+        Issues)</h3>
+    <p style="color: #7f8c8d; font-size: 14px; margin: 10px 0;">
+        Rows that failed to load due to parsing errors, malformed data, or other issues.
+    </p>
+
+    {# Source Rejects #}
+    {% if source_rejects and source_rejects|length > 0 %}
+    <div style="margin: 20px 0;">
+        <h4 style="color: #c0392b; margin: 10px 0;">📁 Source File Rejected Rows ({{ source_rejects|length }})</h4>
+        <div class="table-container" style="margin-top: 10px; max-height: 400px; overflow-y: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Line #</th>
+                        <th style="width: 150px;">Error Type</th>
+                        <th>Error Details</th>
+                        <th style="width: 100px;">Column</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reject in source_rejects %}
+                    <tr style="background-color: #fff5f5;">
+                        <td style="font-weight: 600; text-align: center; color: #c0392b;">{{ reject.line if reject.line
+                            else 'N/A' }}</td>
+                        <td style="font-family: 'Consolas', monospace; font-size: 11px; color: #721c24;">
+                            {% if 'mismatch' in (reject.error|lower) %}
+                            Column Mismatch
+                            {% elif 'quote' in (reject.error|lower) %}
+                            Quote Error
+                            {% elif 'delimiter' in (reject.error|lower) %}
+                            Delimiter Error
+                            {% else %}
+                            Parse Error
+                            {% endif %}
+                        </td>
+                        <td style="font-family: 'Consolas', monospace; font-size: 11px; color: #721c24;">
+                            {{ reject.error if reject.error else 'Unknown error' }}
+                        </td>
+                        <td style="text-align: center; color: #721c24;">
+                            {{ reject.column_idx if reject.column_idx is not none else '-' }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {# Target Rejects #}
+    {% if target_rejects and target_rejects|length > 0 %}
+    <div style="margin: 20px 0;">
+        <h4 style="color: #2980b9; margin: 10px 0;">📁 Target File Rejected Rows ({{ target_rejects|length }})</h4>
+        <div class="table-container" style="margin-top: 10px; max-height: 400px; overflow-y: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Line #</th>
+                        <th style="width: 150px;">Error Type</th>
+                        <th>Error Details</th>
+                        <th style="width: 100px;">Column</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reject in target_rejects %}
+                    <tr style="background-color: #f0f8ff;">
+                        <td style="font-weight: 600; text-align: center; color: #2980b9;">{{ reject.line if reject.line
+                            else 'N/A' }}</td>
+                        <td style="font-family: 'Consolas', monospace; font-size: 11px; color: #1c5472;">
+                            {% if 'mismatch' in (reject.error|lower) %}
+                            Column Mismatch
+                            {% elif 'quote' in (reject.error|lower) %}
+                            Quote Error
+                            {% elif 'delimiter' in (reject.error|lower) %}
+                            Delimiter Error
+                            {% else %}
+                            Parse Error
+                            {% endif %}
+                        </td>
+                        <td style="font-family: 'Consolas', monospace; font-size: 11px; color: #1c5472;">
+                            {{ reject.error if reject.error else 'Unknown error' }}
+                        </td>
+                        <td style="text-align: center; color: #1c5472;">
+                            {{ reject.column_idx if reject.column_idx is not none else '-' }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    <div
+        style="background: #fff3cd; padding: 15px; border-radius: 6px; border-left: 4px solid #ffc107; margin-top: 15px;">
+        <strong style="color: #856404;">📌 Note:</strong>
+        <span style="color: #856404; font-size: 13px;">
+            These rows were excluded from the comparison due to data quality issues.
+            Review and fix these rows in the source files before reprocessing.
+            {% if (source_rejects and source_rejects|length >= 500) or (target_rejects and target_rejects|length >= 500)
+            %}
+            <br><strong>⚠️ Showing first 500 rejected rows only.</strong> Check error tables for complete list.
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endif %}

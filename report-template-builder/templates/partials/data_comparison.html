@@ -1,0 +1,322 @@
+{# Data Comparison Section #}
+
+{# Perfect Match Message #}
+{% if data|length == 0 %}
+<div class="success-message"
+    style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); padding: 40px; border-radius: 12px; text-align: center; margin: 30px 0; border: 3px solid #28a745; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);">
+    <div style="font-size: 72px; margin-bottom: 20px;">✅</div>
+    <h2 style="color: #155724; font-size: 32px; margin: 0 0 15px 0;">Perfect Match!</h2>
+    <p style="color: #155724; font-size: 18px; margin: 0 0 10px 0;">All {{ source_count }} rows match perfectly between
+        source and target.</p>
+    <p style="color: #28a745; font-size: 16px; font-weight: 600; margin: 0;">100% Data Parity Achieved 🎉</p>
+</div>
+{% endif %}
+
+{# Stacked View Hint #}
+<div id="stackedViewHint"
+    style="display: none; background: #e3f2fd; padding: 12px 16px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #2196f3;">
+    <span style="color: #1565c0; font-weight: 600;">💡 Stacked View Tip:</span>
+    <span style="color: #1976d2; font-size: 14px;">
+        Showing first 5 rows in each pane for easy row-by-row comparison. Scroll within each pane to view more rows.
+    </span>
+</div>
+
+{# Perfect Match Sample Data View #}
+{% if data|length == 0 and sample_data and sample_data|length > 0 %}
+<div class="comparison-workspace vertical side-view-only" id="comparisonWorkspace">
+    {# Source Pane #}
+    <div class="comparison-pane">
+        <div class="pane-header">📄 Source Data ({{ total_sample_records }} matching records)</div>
+        <div class="pane-content" id="sourceScroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Status</th>
+                        {% for pk in pks %}<th style="background-color: #2e7d32;">🔑 {{ pk }}</th>{% endfor %}
+                        {% for col in cols %}<th>{{ col }}</th>{% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in sample_data %}
+                    <tr style="background-color: #d4edda;">
+                        <td>
+                            <span class="status-cell"
+                                style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">
+                                MATCH ✓
+                            </span>
+                        </td>
+                        {% for pk in pks %}
+                        <td style="font-weight: 600; color: #155724;">
+                            {{ row[pk] if row[pk] else '<span class="null-value">NULL</span>' }}
+                        </td>
+                        {% endfor %}
+                        {% for col in cols %}
+                        {% set src_val = row[col + '_source'] %}
+                        <td class="cell-match" style="color: #155724;">
+                            {{ src_val if src_val else '<span class="null-value">NULL</span>' }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {# Target Pane #}
+    <div class="comparison-pane">
+        <div class="pane-header">🎯 Target Data ({{ total_sample_records }} matching records)</div>
+        <div class="pane-content" id="targetScroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Status</th>
+                        {% for pk in pks %}<th style="background-color: #2e7d32;">🔑 {{ pk }}</th>{% endfor %}
+                        {% for col in cols %}<th>{{ col }}</th>{% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in sample_data %}
+                    <tr style="background-color: #d4edda;">
+                        <td>
+                            <span class="status-cell"
+                                style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">
+                                MATCH ✓
+                            </span>
+                        </td>
+                        {% for pk in pks %}
+                        <td style="font-weight: 600; color: #155724;">
+                            {{ row[pk] if row[pk] else '<span class="null-value">NULL</span>' }}
+                        </td>
+                        {% endfor %}
+                        {% for col in cols %}
+                        {% set tgt_val = row[col + '_target'] %}
+                        <td class="cell-match" style="color: #155724;">
+                            {{ tgt_val if tgt_val else '<span class="null-value">NULL</span>' }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{# Inline View for Perfect Match #}
+<div class="table-container inline-view-only">
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 100px;">Status</th>
+                {% for pk in pks %}<th style="background-color: #2e7d32;">🔑 {{ pk }}</th>{% endfor %}
+                {% for col in cols %}<th>{{ col }}</th>{% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in sample_data %}
+            <tr style="background-color: #d4edda;">
+                <td>
+                    <span class="status-cell"
+                        style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">
+                        MATCH ✓
+                    </span>
+                </td>
+                {% for pk in pks %}
+                <td style="font-weight: 600; color: #155724;">
+                    {{ row[pk] if row[pk] else '<span class="null-value">NULL</span>' }}
+                </td>
+                {% endfor %}
+                {% for col in cols %}
+                {% set src_val = row[col + '_source'] %}
+                {% set tgt_val = row[col + '_target'] %}
+                <td style="color: #155724;">
+                    <div class="inline-match" style="background-color: #d4edda; padding: 4px;">
+                        <div class="inline-row" style="margin-bottom: 2px;">
+                            <span style="font-weight: 600; font-size: 11px;">SRC:</span>
+                            <span>✓ {{ src_val if src_val else '<span class="null-value">NULL</span>' }}</span>
+                        </div>
+                        <div class="inline-row">
+                            <span style="font-weight: 600; font-size: 11px;">TGT:</span>
+                            <span>✓ {{ tgt_val if tgt_val else '<span class="null-value">NULL</span>' }}</span>
+                        </div>
+                    </div>
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 6px; text-align: center;">
+    <p style="color: #495057; font-size: 14px; margin: 0;">
+        📊 <strong>Total Matching Records:</strong> {{ total_sample_records }} |
+        <strong>Showing:</strong> {{ [sample_data|length, 500]|min }} sample records |
+        <strong>Match Rate:</strong> 100% ✅
+    </p>
+</div>
+
+{# Data Mismatch View #}
+{% elif data|length > 0 %}
+<div class="comparison-workspace vertical side-view-only" id="comparisonWorkspace">
+    {# Source Pane #}
+    <div class="comparison-pane">
+        <div class="pane-header">📄 Source Data</div>
+        <div class="pane-content" id="sourceScroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 150px;">Status</th>
+                        {% for pk in pks %}<th style="background-color: #2e7d32;">🔑 {{ pk }}</th>{% endfor %}
+                        {% for col in cols %}<th>{{ col }}</th>{% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                    <tr
+                        class="{{ 'row-missing-source' if 'Source' in row.validation_status else 'row-missing-target' if 'Target' in row.validation_status else '' }}">
+                        <td>
+                            <span
+                                class="status-cell {{ 'status-missing-source' if 'Source' in row.validation_status else 'status-missing-target' if 'Target' in row.validation_status else 'status-mismatch' }}">
+                                {{ row.validation_status }}
+                            </span>
+                        </td>
+                        {% for pk in pks %}
+                        <td class="{{ 'pk-match' if row.validation_status == 'Found in Both' else '' }}">
+                            {{ row[pk] if row[pk] else '<span class="null-value">NULL</span>' }}
+                        </td>
+                        {% endfor %}
+                        {% for col in cols %}
+                        {% set status = row[col + '_status'] %}
+                        {% set src_val = row[col + '_source'] %}
+                        {% if status == 'MATCH' %}
+                        <td class="cell-match">
+                            {{ src_val if src_val else '<span class="null-value">NULL</span>' }}
+                        </td>
+                        {% else %}
+                        <td class="cell-source">
+                            {{ src_val if src_val else '<span class="null-value">NULL</span>' }}
+                        </td>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {# Target Pane #}
+    <div class="comparison-pane">
+        <div class="pane-header">🎯 Target Data</div>
+        <div class="pane-content" id="targetScroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 150px;">Status</th>
+                        {% for pk in pks %}<th style="background-color: #2e7d32;">🔑 {{ pk }}</th>{% endfor %}
+                        {% for col in cols %}<th>{{ col }}</th>{% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                    <tr
+                        class="{{ 'row-missing-source' if 'Source' in row.validation_status else 'row-missing-target' if 'Target' in row.validation_status else '' }}">
+                        <td>
+                            <span
+                                class="status-cell {{ 'status-missing-source' if 'Source' in row.validation_status else 'status-missing-target' if 'Target' in row.validation_status else 'status-mismatch' }}">
+                                {{ row.validation_status }}
+                            </span>
+                        </td>
+                        {% for pk in pks %}
+                        <td class="{{ 'pk-match' if row.validation_status == 'Found in Both' else '' }}">
+                            {{ row[pk] if row[pk] else '<span class="null-value">NULL</span>' }}
+                        </td>
+                        {% endfor %}
+                        {% for col in cols %}
+                        {% set status = row[col + '_status'] %}
+                        {% set tgt_val = row[col + '_target'] %}
+                        {% if status == 'MATCH' %}
+                        <td class="cell-match">
+                            {{ tgt_val if tgt_val else '<span class="null-value">NULL</span>' }}
+                        </td>
+                        {% else %}
+                        <td class="cell-target">
+                            {{ tgt_val if tgt_val else '<span class="null-value">NULL</span>' }}
+                        </td>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{# Inline View: Stacked Table #}
+<div class="table-container inline-view-only">
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 150px;">Status</th>
+                {% for pk in pks %}<th style="background-color: #2e7d32;">🔑 {{ pk }}</th>{% endfor %}
+                {% for col in cols %}<th colspan="2">{{ col }}</th>{% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr
+                class="{{ 'row-missing-source' if 'Source' in row.validation_status else 'row-missing-target' if 'Target' in row.validation_status else '' }}">
+                <td>
+                    <span
+                        class="status-cell {{ 'status-missing-source' if 'Source' in row.validation_status else 'status-missing-target' if 'Target' in row.validation_status else 'status-mismatch' }}">
+                        {{ row.validation_status }}
+                    </span>
+                </td>
+                {% for pk in pks %}
+                <td class="{{ 'pk-match' if row.validation_status == 'Found in Both' else '' }}">
+                    {{ row[pk] if row[pk] else '<span class="null-value">NULL</span>' }}
+                </td>
+                {% endfor %}
+                {% for col in cols %}
+                {% set status = row[col + '_status'] %}
+                {% set src_val = row[col + '_source'] %}
+                {% set tgt_val = row[col + '_target'] %}
+                <td colspan="2">
+                    {% if status == 'MATCH' %}
+                    <div class="inline-match">
+                        <div class="inline-row source-row">
+                            <span class="inline-label source-label">SOURCE:</span>
+                            <span class="inline-value">✓ {{ src_val if src_val else '<span
+                                    class="null-value">NULL</span>' }}</span>
+                        </div>
+                        <div class="inline-row target-row">
+                            <span class="inline-label target-label">TARGET:</span>
+                            <span class="inline-value">✓ {{ tgt_val if tgt_val else '<span
+                                    class="null-value">NULL</span>' }}</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="inline-comparison">
+                        <div class="inline-row source-row">
+                            <span class="inline-label source-label">SOURCE:</span>
+                            <span class="inline-value">{{ src_val if src_val else '<span class="null-value">NULL</span>'
+                                }}</span>
+                        </div>
+                        <div class="inline-row target-row">
+                            <span class="inline-label target-label">TARGET:</span>
+                            <span class="inline-value">{{ tgt_val if tgt_val else '<span class="null-value">NULL</span>'
+                                }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}

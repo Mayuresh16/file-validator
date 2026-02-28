@@ -1,0 +1,27 @@
+{# Data Quality Insights Panel #}
+<div class="insights-panel">
+    <h3>🔍 Data Quality Insights</h3>
+    <div class="insight-cards">
+        <div class="insight-card success">
+            <div class="insight-value" id="accuracyScore">{{ "%.1f"|format(match_percentage) }}%</div>
+            <div class="insight-label">Data Accuracy Score</div>
+            <div class="insight-detail">Based on row-level comparison</div>
+        </div>
+        <div class="insight-card {{ 'warning' if missing_in_source > 0 or missing_in_target > 0 else 'success' }}">
+            <div class="insight-value">{{ missing_in_source + missing_in_target }}</div>
+            <div class="insight-label">Missing Records</div>
+            <div class="insight-detail">{{ missing_in_source }} in source, {{ missing_in_target }} in target</div>
+        </div>
+        <div class="insight-card {{ 'error' if data|length > 100 else 'warning' if data|length > 0 else 'success' }}">
+            <div class="insight-value">{{ data|length }}</div>
+            <div class="insight-label">Total Discrepancies</div>
+            <div class="insight-detail">Rows with differences detected</div>
+        </div>
+        <div class="insight-card">
+            <div class="insight-value">{{ cols|length if cols else 0 }}</div>
+            <div class="insight-label">Columns Compared</div>
+            <div class="insight-detail">Excluding primary keys</div>
+        </div>
+    </div>
+</div>
+

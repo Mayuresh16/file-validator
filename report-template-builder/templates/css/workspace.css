@@ -1,0 +1,160 @@
+/* ============================================
+   WORKSPACE LAYOUT - Dual Pane Views
+   Side-by-Side and Stacked view styles
+   ============================================ */
+
+.comparison-workspace {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.comparison-workspace.vertical {
+    flex-direction: row;
+}
+
+.comparison-workspace.horizontal {
+    flex-direction: column;
+}
+
+/* ============================================
+   PANE STRUCTURE
+   ============================================ */
+
+.comparison-pane {
+    flex: 1;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.pane-header {
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+    color: white;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 15px;
+    border-bottom: 3px solid #3498db;
+}
+
+.pane-content {
+    flex: 1;
+    overflow: auto;
+    max-height: 600px;
+}
+
+/* Stacked view specific: limit height to ~5 rows */
+.comparison-workspace.horizontal .pane-content {
+    max-height: 280px;
+    min-height: 280px;
+}
+
+/* Header and Trailer workspaces in stacked view - smaller height */
+#headerWorkspace.horizontal .pane-content,
+#trailerWorkspace.horizontal .pane-content {
+    max-height: 200px;
+    min-height: 200px;
+}
+
+/* Stacked view enhancements */
+.comparison-workspace.horizontal .comparison-pane {
+    margin-bottom: 0;
+}
+
+/* Row highlighting for better comparison in stacked view */
+.comparison-workspace.horizontal tbody tr:hover {
+    background-color: #fff9c4 !important;
+    cursor: pointer;
+}
+
+/* Add subtle borders between panes in stacked view */
+.comparison-workspace.horizontal .comparison-pane:first-child {
+    border-bottom: 3px solid #3498db;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.comparison-workspace.horizontal .comparison-pane:last-child {
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+/* Synchronized scrollbar styling */
+.pane-content::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+.pane-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.pane-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.pane-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* ============================================
+   FREEZE HEADERS
+   ============================================ */
+
+/* Freeze column names in side-by-side and stacked views */
+.scrollable-table-container thead th,
+.pane-content table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #34495e;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Freeze header row in side-by-side and stacked views */
+.comparison-pane .pane-content table thead {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Added CSS to freeze the column names row */
+.freeze-header {
+    position: sticky;
+    top: 0;
+    background-color: #f9f9f9;
+    z-index: 2;
+}
+
+/* Ensure headers remain sticky in both views */
+.data-view-pane table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #fff;
+}
+
+/* Additional styles for side-by-side view */
+.side-by-side-view .data-view-pane {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+}
+
+/* Additional styles for stacked view */
+.stacked-view .data-view-pane {
+    display: block;
+    overflow-y: auto;
+}
+

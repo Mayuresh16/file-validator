@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Validation Report</title>
+    <meta charset="UTF-8">
+    <style>
+        {# ============================================
+           MODULAR CSS - All styles inlined for portability
+           ============================================ #}
+
+        {# Base Styles #}
+        {% include 'css/base.css' %}
+
+        {# Component Styles #}
+        {% include 'css/components.css' %}
+
+        {# Comparison View Styles #}
+        {% include 'css/comparison.css' %}
+
+        {# Workspace Layout Styles #}
+        {% include 'css/workspace.css' %}
+
+        {# Character Diff Styles #}
+        {% include 'css/char-diff.css' %}
+
+        {# Search & Filter Styles #}
+        {% include 'css/search-filter.css' %}
+
+        {# Controls Styles #}
+        {% include 'css/controls.css' %}
+
+        {# Dark Mode Styles #}
+        {% include 'css/dark-mode.css' %}
+    </style>
+</head>
+<body class="side-view">
+    {# UI Controls (fixed position elements) #}
+    {% include 'partials/ui_controls.html' %}
+
+    <div class="container">
+        <h1>📊 Data File Validation Report</h1>
+
+        {# Job ID Section #}
+        {% include 'partials/job_section.html' %}
+
+        {# Data Quality Insights Panel #}
+        {% include 'partials/insights_panel.html' %}
+
+        {# Search & Filter Bar #}
+        {% include 'partials/search_filter.html' %}
+
+        {# View Toggle Controls #}
+        {% include 'partials/view_controls.html' %}
+
+        {# Legend Section #}
+        {% include 'partials/legend.html' %}
+
+        {# Summary Section (includes Primary Keys) #}
+        {% include 'partials/summary.html' %}
+
+        {# File Naming Convention Section #}
+        {% include 'partials/file_naming.html' %}
+
+        {# Header Comparison Section #}
+        {% include 'partials/header_comparison.html' %}
+
+        {# Trailer Comparison Section #}
+        {% include 'partials/trailer_comparison.html' %}
+
+        {# Rejected Rows Section #}
+        {% include 'partials/rejected_rows.html' %}
+
+        {# Data Comparison Section #}
+        {% include 'partials/data_comparison.html' %}
+    </div>
+
+    {# ============================================
+       MODULAR JAVASCRIPT - All scripts inlined for portability
+       ============================================ #}
+
+    <script>
+        {# Timezone data initialization from template #}
+        const timezoneData = {
+            local: "{{ report_time_local }}",
+            utc: "{{ report_time_utc }}",
+            ist: "{{ report_time_ist }}",
+            et: "{{ report_time_et }}"
+        };
+        const localTzName = "{{ local_tz_name }}";
+        const localTzAbbr = "{{ local_tz_abbr }}";
+
+        {# Pagination variables #}
+        let sideCurrentlyVisible = Math.min(20, {{ total_sample_records }});
+        const sideTotalRecords = {{ total_sample_records }};
+        let inlineCurrentlyVisible = Math.min(20, {{ total_sample_records }});
+        const inlineTotalRecords = {{ total_sample_records }};
+    </script>
+
+    <script>
+        {% include 'js/view-switcher.js' %}
+    </script>
+
+    <script>
+        {% include 'js/sync-scroll.js' %}
+    </script>
+
+    <script>
+        {% include 'js/char-diff.js' %}
+    </script>
+
+    <script>
+        {% include 'js/search-filter.js' %}
+    </script>
+
+    <script>
+        {% include 'js/navigation.js' %}
+    </script>
+
+    <script>
+        {% include 'js/theme.js' %}
+    </script>
+
+    <script>
+        {% include 'js/timezone.js' %}
+    </script>
+
+    <script>
+        {% include 'js/utilities.js' %}
+    </script>
+
+    <script>
+        console.log('✨ All modular components loaded successfully!');
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,433 @@
+/* ============================================
+   VIEW TOGGLE CONTROLS
+   Styles for switching between views
+   ============================================ */
+
+.view-controls {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.toggle-label {
+    font-weight: 600;
+    color: #34495e;
+    font-size: 14px;
+}
+
+.toggle-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.toggle-btn {
+    padding: 8px 20px;
+    border: 2px solid #3498db;
+    background: white;
+    color: #3498db;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.toggle-btn:hover {
+    background: #ebf5fb;
+}
+
+.toggle-btn.active {
+    background: #3498db;
+    color: white;
+}
+
+.toggle-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ============================================
+   COMPARISON CELLS
+   ============================================ */
+
+/* Primary Key Cells - Light Green for matches */
+.pk-match {
+    background-color: #d4edda;
+    font-weight: 600;
+    color: #155724;
+}
+
+/* Primary Key Column Headers - Distinctive Green Background */
+th[style*="background-color: #2e7d32"] {
+    background-color: #2e7d32 !important;
+    color: white !important;
+    font-weight: 700;
+    position: relative;
+}
+
+/* Missing Row Styles - Applied to entire row */
+.row-missing-source {
+    background-color: #fff3cd !important;
+}
+
+.row-missing-source td {
+    background-color: #fff3cd !important;
+    color: #856404;
+}
+
+.row-missing-target {
+    background-color: #ffe5d0 !important;
+}
+
+.row-missing-target td {
+    background-color: #ffe5d0 !important;
+    color: #8b4513;
+}
+
+/* Split Column Headers */
+.split-header {
+    background-color: #2c3e50 !important;
+    text-align: center;
+    border-bottom: 1px solid #1a252f;
+}
+
+.subheader th {
+    background-color: #34495e;
+    padding: 8px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.source-header {
+    border-right: 2px solid #e74c3c;
+    color: #ecf0f1;
+}
+
+.target-header {
+    border-right: 2px solid #3498db;
+    color: #ecf0f1;
+}
+
+/* Cell Styles for Side-by-Side Comparison */
+.cell-source {
+    background-color: #ffcccc;
+    border-right: 2px solid #e74c3c;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    color: #333;
+    position: relative;
+    vertical-align: top;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.cell-target {
+    background-color: #ffcccc;
+    border-right: 2px solid #e74c3c;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    color: #333;
+    position: relative;
+    vertical-align: top;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.cell-match {
+    background-color: #d4edda;
+    text-align: center;
+    font-weight: 500;
+    color: #155724;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.match-indicator {
+    display: inline-block;
+    color: #28a745;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.match-text {
+    display: inline-block;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    color: #155724;
+}
+
+/* Common comparison styles */
+.comparison-cell {
+    padding: 4px;
+}
+
+/* Status Column */
+.status-cell {
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: inline-block;
+    min-width: 120px;
+    text-align: center;
+}
+
+.status-missing-source {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-missing-target {
+    background-color: #ffe5d0;
+    color: #8b4513;
+}
+
+.status-mismatch {
+    background-color: #f5c6cb;
+    color: #721c24;
+}
+
+/* ============================================
+   INLINE VIEW STYLES
+   ============================================ */
+
+.inline-comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.inline-row {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+}
+
+.source-row {
+    background-color: #ffcccc;
+    border-left: 3px solid #e74c3c;
+}
+
+.target-row {
+    background-color: #ffcccc;
+    border-left: 3px solid #e74c3c;
+}
+
+.inline-label {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    margin-right: 10px;
+    min-width: 60px;
+}
+
+.source-label {
+    color: #c0392b;
+}
+
+.target-label {
+    color: #2980b9;
+}
+
+.inline-value {
+    flex: 1;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+.inline-match {
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.inline-match .inline-label {
+    color: #155724;
+    font-weight: 600;
+}
+
+.inline-match .inline-value {
+    color: #155724;
+}
+
+/* Inline view tables should be scrollable with sticky headers */
+.inline-view-only.table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: auto;
+    display: block;
+    position: relative;
+    scroll-behavior: smooth;
+}
+
+.inline-view-only.table-container::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+.inline-view-only.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.inline-view-only.table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.inline-view-only.table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.inline-view-only.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.inline-view-only.table-container thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.inline-view-only.table-container thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #34495e;
+    color: white;
+    padding: 14px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 2px solid #2c3e50;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.inline-view-only.table-container tbody td {
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+/* Inline Data View Pane */
+.inline-data-view {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: auto;
+    display: block;
+    position: relative;
+}
+
+.inline-data-view table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.inline-data-view thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.inline-data-view thead th {
+    background-color: #34495e;
+    color: white;
+    padding: 14px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 2px solid #2c3e50;
+}
+
+.inline-data-view tbody td {
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.inline-data-view-pane {
+    position: relative;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+
+.inline-data-view-pane table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.inline-data-view-pane thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.inline-data-view-pane thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f9f9f9;
+    z-index: 2;
+    border-bottom: 2px solid #ddd;
+}
+
+.inline-data-view-pane th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.inline-data-view-pane td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+/* ============================================
+   VIEW MODE TOGGLE CSS
+   ============================================ */
+
+body.side-view .inline-view-only {
+    display: none !important;
+}
+
+body.inline-view .side-view-only {
+    display: none !important;
+}
+
+body.side-view .comparison-workspace {
+    display: flex;
+}
+
+body.inline-view .comparison-workspace {
+    display: none;
+}
+

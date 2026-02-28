@@ -1,0 +1,25 @@
+{# Job ID Section - Header with file comparison info and timestamps #}
+<div class="job-id-section">
+    <div class="comparison-title">
+        <span>📄 {{ source_filename }}</span>
+        <span class="vs-badge">vs</span>
+        <span>📄 {{ target_filename }}</span>
+    </div>
+    <div class="job-id-row">
+        <span>🆔 Job ID: <strong>{{ job_id }}</strong></span>
+        <button class="copy-btn" onclick="copyJobId('{{ job_id }}')" title="Copy Job ID">📋 Copy</button>
+    </div>
+    <div class="timestamp-row">
+        <span>🕐 Report Generated:</span>
+        <div class="timestamp-display">
+            <span id="displayedTime">{{ report_time_local }}</span>
+        </div>
+        <div class="timezone-selector">
+            <button class="timezone-btn active" data-timezone="local" onclick="switchTimezone('local')" title="{{ local_tz_name }}">LOCAL</button>
+            <button class="timezone-btn" data-timezone="utc" onclick="switchTimezone('utc')" title="Coordinated Universal Time">UTC</button>
+            <button class="timezone-btn" data-timezone="ist" onclick="switchTimezone('ist')" title="India Standard Time">IST</button>
+            <button class="timezone-btn" data-timezone="et" onclick="switchTimezone('et')" title="Eastern Time (US)">ET</button>
+        </div>
+    </div>
+</div>
+

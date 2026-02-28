@@ -1,0 +1,161 @@
+/* ============================================
+   BASE STYLES
+   Core styles for the validation report
+   ============================================ */
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+    background-color: #f5f5f5;
+    margin: 0;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    font-size: 28px;
+}
+
+/* ============================================
+   TABLE STYLES
+   ============================================ */
+
+.table-container {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #34495e;
+    color: white;
+    padding: 14px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 2px solid #2c3e50;
+}
+
+td {
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* ============================================
+   SCROLLABLE TABLE CONTAINERS
+   ============================================ */
+
+.scrollable-table-container {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    max-height: 500px;
+    overflow-y: scroll !important;
+    overflow-x: auto;
+    display: block;
+    position: relative;
+    scroll-behavior: smooth;
+}
+
+.scrollable-table-container::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+.scrollable-table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.scrollable-table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.scrollable-table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.scrollable-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.scrollable-table-container thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.scrollable-table-container thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #34495e;
+    color: white;
+    padding: 14px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 2px solid #2c3e50;
+}
+
+.scrollable-table-container thead .subheader th {
+    position: sticky;
+    top: 42px;
+    z-index: 10;
+}
+
+.scrollable-table-container tbody td {
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+/* ============================================
+   NULL VALUE STYLING
+   ============================================ */
+
+.null-value {
+    color: #95a5a6;
+    font-style: italic;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.hidden-row {
+    display: none !important;
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+    font-size: 16px;
+}
+

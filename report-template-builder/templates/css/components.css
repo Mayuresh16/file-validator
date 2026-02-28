@@ -1,0 +1,293 @@
+/* ============================================
+   JOB ID SECTION STYLES
+   Styles for the job identifier header section
+   ============================================ */
+
+.job-id-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.job-id-section .comparison-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.job-id-section .comparison-title .vs-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.job-id-section .job-id-row {
+    font-size: 14px;
+    opacity: 0.9;
+    font-family: 'Courier New', monospace;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.job-id-section .job-id-row .copy-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    opacity: 1;
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.job-id-section .job-id-row .copy-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.job-id-section .job-id-row .copy-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.job-id-section .job-id-row .copy-btn.copied {
+    background: rgba(39, 174, 96, 0.8);
+    border-color: rgba(39, 174, 96, 0.9);
+    color: white;
+}
+
+.job-id-section .timestamp-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 13px;
+    opacity: 0.95;
+    flex-wrap: wrap;
+}
+
+.job-id-section .timestamp-display {
+    font-family: 'Courier New', monospace;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 6px 12px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.job-id-section .timezone-selector {
+    display: flex;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 3px;
+    border-radius: 6px;
+}
+
+.job-id-section .timezone-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================
+   LEGEND SECTION
+   ============================================ */
+
+.legend {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.legend h3 {
+    margin-top: 0;
+    color: #34495e;
+    font-size: 18px;
+}
+
+.legend-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.legend-color {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    margin-right: 12px;
+    border: 1px solid #ddd;
+}
+
+.legend-match {
+    background-color: #d4edda;
+}
+
+.legend-mismatch-src {
+    background-color: #ffcccc;
+}
+
+.legend-mismatch-tgt {
+    background-color: #ffcccc;
+}
+
+.legend-missing-src {
+    background-color: #fff3cd;
+}
+
+.legend-missing-tgt {
+    background-color: #ffe5d0;
+}
+
+/* ============================================
+   SUMMARY SECTION
+   ============================================ */
+
+.summary {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.stat-box {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 4px solid #3498db;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+.stat-missing-source {
+    border-left-color: #f39c12;
+}
+
+.stat-missing-source .stat-value {
+    color: #f39c12;
+}
+
+.stat-missing-target {
+    border-left-color: #e67e22;
+}
+
+.stat-missing-target .stat-value {
+    color: #e67e22;
+}
+
+.stat-matching {
+    border-left-color: #27ae60;
+}
+
+.stat-matching .stat-value {
+    color: #27ae60;
+}
+
+.stat-percentage {
+    font-size: 14px;
+    color: #27ae60;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+/* ============================================
+   DATA QUALITY INSIGHTS PANEL
+   ============================================ */
+
+.insights-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.insight-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.insight-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.insight-card.warning {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+}
+
+.insight-card.error {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.insight-card.success {
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+}
+
+.insight-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.insight-label {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.insight-detail {
+    margin-top: 10px;
+    font-size: 12px;
+    opacity: 0.8;
+}
