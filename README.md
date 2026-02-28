@@ -97,7 +97,7 @@ uv sync
 bash scripts/start_server.sh
 
 # PowerShell
-.\tools\start_server.ps1
+.\scripts\start_server.ps1
 
 # Direct (dev mode with hot-reload, port 9000)
 uv run fastapi dev file-validator-webserver/src/file_validator_webserver/main.py --host 127.0.0.1 --port 9000
