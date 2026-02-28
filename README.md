@@ -31,7 +31,6 @@ This project currently focuses on `Local` storage and `GCS` for cloud storage su
 Support for AWS S3 and Azure Blob Storage may be added in the future based on demand.
 
 ---
----
 
 ## Project Structure
 
