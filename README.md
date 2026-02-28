@@ -24,6 +24,15 @@ auditing data files. It provides:
 
 ---
 
+## <span style="color: red; font-weight: bold;">⚠️ Note:</span>
+
+This project currently focuses on `Local` storage and `GCS` for cloud storage support.
+
+Support for AWS S3 and Azure Blob Storage may be added in the future based on demand.
+
+---
+---
+
 ## Project Structure
 
 ```
