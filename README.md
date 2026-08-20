@@ -1,6 +1,6 @@
 # File Validator
 
-**Version:** 1.0  
+**Version:** 0.2.0  
 **Last Updated:** August 21, 2026  
 **Created:** February 01, 2026
 
