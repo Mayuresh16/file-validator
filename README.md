@@ -1,7 +1,8 @@
 # File Validator
 
 **Version:** 1.0  
-**Last Updated:** February 01, 2026
+**Last Updated:** August 21, 2026  
+**Created:** February 01, 2026
 
 A file validation and comparison framework with interactive reporting and a web UI.
 
@@ -92,13 +93,39 @@ uv sync
 
 ### Start the Web UI
 
+#### Using Start Scripts (Recommended)
+
+All start scripts (`start_server.sh`, `start_server.ps1`, `start_server.bat`) support the following options:
+
+| Option          | Short | Description                                                |
+|-----------------|-------|------------------------------------------------------------|
+| `--env`         | `-e`  | Environment: `dev` or `prod` (default: `prod`)             |
+| `--port`        | `-p`  | Port number (default: 9000 for dev, 9290 for prod)         |
+| `--host`        | `-h`  | Host address (default: 127.0.0.1 for dev, required for prod) |
+| `--help`        |       | Show help message                                          |
+
+**Examples:**
+
 ```bash
-# Bash (recommended — handles sync, checks imports)
-bash scripts/start_server.sh
+# Bash
+bash scripts/start_server.sh -e dev                          # Dev mode, default host and port
+bash scripts/start_server.sh --env=prod --host=0.0.0.0       # Production mode, bind to all interfaces
+bash scripts/start_server.sh -e dev -p 8080 -h localhost     # Dev mode, custom port and host
 
 # PowerShell
-.\scripts\start_server.ps1
+.\scripts\start_server.ps1 -Env dev                          # Dev mode
+.\scripts\start_server.ps1 -Env prod -Host 0.0.0.0 -Port 9290 # Production mode
+.\scripts\start_server.ps1 --help                            # Show help
 
+# Batch (Windows CMD)
+scripts\start_server.bat -e dev                              # Dev mode
+scripts\start_server.bat --env=prod --host=0.0.0.0 --port=8080 # Production mode
+scripts\start_server.bat --help                              # Show help
+```
+
+#### Direct FastAPI Commands
+
+```bash
 # Direct (dev mode with hot-reload, port 9000)
 uv run fastapi dev file-validator-webserver/src/file_validator_webserver/main.py --host 127.0.0.1 --port 9000
 
@@ -106,7 +133,9 @@ uv run fastapi dev file-validator-webserver/src/file_validator_webserver/main.py
 uv run fastapi run file-validator-webserver/src/file_validator_webserver/main.py --host 127.0.0.1 --port 8000
 ```
 
-Open http://127.0.0.1:8000 (or `:9000` in dev mode).
+**Access the application:**
+- Development: http://127.0.0.1:9000
+- Production: http://127.0.0.1:9290 (or your custom port)
 
 ---
 
@@ -356,23 +385,26 @@ bash scripts/run_tests.sh webserver
 # Run tests with verbose output
 bash scripts/run_tests.sh all -v
 
-# Start dev server (hot-reload)
-bash scripts/start_server.sh dev
+# Start dev server (hot-reload on default port 9000)
+bash scripts/start_server.sh -e dev
 
-# Start production server
-bash scripts/start_server.sh prod
+# Start production server (requires --host)
+bash scripts/start_server.sh -e prod --host=0.0.0.0
+
+# Start with custom port and host
+bash scripts/start_server.sh --env=dev --port=8080 --host=localhost
 
 ```
 
 ### Project Tools
 
-| Script                     | Purpose                                                  |
-|----------------------------|----------------------------------------------------------|
-| `scripts/start_server.sh`  | Start server — `dev` or `prod` mode (Bash)               |
-| `scripts/start_server.ps1` | Start server — `dev` or `prod` mode (PowerShell)         |
-| `scripts/start_server.bat` | Start server — `dev` or `prod` mode (CMD)                |
-| `scripts/run_tests.sh`     | Run pytest suite — `all`/`core`/`webserver` (Bash)       |
-| `scripts/run_tests.ps1`    | Run pytest suite — `all`/`core`/`webserver` (PowerShell) |
+| Script                     | Purpose                                                                              |
+|----------------------------|--------------------------------------------------------------------------------------|
+| `scripts/start_server.sh`  | Start server with CLI options: `-e/--env`, `-p/--port`, `-h/--host` (Bash)          |
+| `scripts/start_server.ps1` | Start server with CLI options: `-Env`, `-Port`, `-Host` (PowerShell)                |
+| `scripts/start_server.bat` | Start server with CLI options: `-e/--env`, `-p/--port`, `-h/--host` (Windows CMD)   |
+| `scripts/run_tests.sh`     | Run pytest suite — `all`/`core`/`webserver` (Bash)                                   |
+| `scripts/run_tests.ps1`    | Run pytest suite — `all`/`core`/`webserver` (PowerShell)                             |
 
 ### Key Dependencies
 
