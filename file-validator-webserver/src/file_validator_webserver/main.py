@@ -88,14 +88,14 @@ except ModuleNotFoundError as exc:
 
 
 def _build_excel_sync(
-    df: pl.DataFrame,
-    primary_keys: list[str],
-    excel_path: Path,
-    sample_df: pl.DataFrame | None = None,
-    header_comparison: list[dict[str, Any]] | None = None,
-    trailer_comparison: list[dict[str, Any]] | None = None,
-    source_rejects: pl.DataFrame | None = None,
-    target_rejects: pl.DataFrame | None = None,
+        df: pl.DataFrame,
+        primary_keys: list[str],
+        excel_path: Path,
+        sample_df: pl.DataFrame | None = None,
+        header_comparison: list[dict[str, Any]] | None = None,
+        trailer_comparison: list[dict[str, Any]] | None = None,
+        source_rejects: pl.DataFrame | None = None,
+        target_rejects: pl.DataFrame | None = None,
 ) -> None:
     build_and_save_excel_file(
         df,
@@ -111,7 +111,6 @@ def _build_excel_sync(
 
 _path_exists = async_path_exists
 _list_files = async_list_files
-
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -240,7 +239,8 @@ def _cleanup_older_cached(ttl_seconds: int) -> None:
 
 
 async def _periodic_cache_cleaner(
-    ttl_seconds: int = CACHE_TTL_SECONDS, interval_seconds: int = CLEANUP_INTERVAL_SECONDS
+        ttl_seconds: int = CACHE_TTL_SECONDS,
+        interval_seconds: int = CLEANUP_INTERVAL_SECONDS,
 ):
     """Background coroutine that periodically removes old cached artifacts."""
     try:
@@ -388,7 +388,7 @@ def build_normalization_config(norm: dict) -> NormalizationConfig:
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     """Render the main UI page."""
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html")
 
 
 @app.get("/favicon.ico", include_in_schema=False)
@@ -435,7 +435,7 @@ async def start_validation(config: dict = Body(...)):
 @app.post("/upload", response_class=JSONResponse)
 async def upload_file(file: UploadFile = File(...)):
     """Upload a local file and return its server path and original filename."""
-    CHUNK_SIZE: int = 8 * (1024**2)  # 8 MB
+    CHUNK_SIZE: int = 8 * (1024 ** 2)  # 8 MB
     try:
         file_path = UPLOADS_DIR / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{file.filename}"
         async with aiofiles.open(file_path, "wb") as buffer:
@@ -851,10 +851,10 @@ def run_validation_job(job_id: str, config: ValidatorConfig):
         update_job_progress(job_id, 15, "Creating file auditor...")
 
         with FileAuditor(
-            source_config=source_conf,
-            target_config=target_conf,
-            primary_keys=config.primary_keys,
-            norm_config=config.normalization,
+                source_config=source_conf,
+                target_config=target_conf,
+                primary_keys=config.primary_keys,
+                norm_config=config.normalization,
         ) as auditor:
             # Step 3: Load data (40%)
             update_job_progress(job_id, 20, "Loading source file...")
@@ -932,7 +932,11 @@ def run_validation_job(job_id: str, config: ValidatorConfig):
                 logger.warning("Job %s: Failed to persist results DataFrame: %s", job_id, e)
 
             # if sample_df is not None:
-            if sample_df and sample_df_path:
+            if (
+                    sample_df is not None
+                    and not sample_df.is_empty()
+                    and sample_df_path is not None
+            ):
                 try:
                     sample_df.write_parquet(sample_df_path, compression="snappy")
                     logger.info("Job %s: Sample DataFrame persisted to: %s", job_id, sample_df_path)
